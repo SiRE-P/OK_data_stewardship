@@ -5,17 +5,34 @@ library(readxl)
 #get list of excel files in directory
 file_list <- list.files(path = "./data/deadpitch/", pattern = "*.xlsx", full.names = TRUE)
 
-#file <- file_list[6]
+file <- file_list[1]
 #read each file and put names in standard format
 read_and_clean <- function(file) {
-  sheet_name <- excel_sheets(file) %>% 
-    str_subset("RawData")
+  sheet_names <- excel_sheets(file)
   
-  #NAs are coded as n/a in some sheets and - in others
-  df <- read_excel(file, sheet = sheet_name, na = c("n/a", "-"), guess_max = 1e5)
+  # If there's a "RawData" sheet, read it in
+  if (any(grepl("RawData", sheet_names))) {
+    raw_data_sheet <- sheet_names[grepl("RawData", sheet_names)][1]  # Take the first "RawData" sheet
+    df_list <- read_excel(file, sheet = raw_data_sheet, na = c("n/a", "-"), guess_max = 1e5) %>% 
+      clean_names()
+    
+  } else {
+    # Otherwise, read in all sheets
+    df_list <- lapply(sheet_names, function(sheet) {
+      df <- read_excel(file, sheet = sheet, na = c("n/a", "-"), guess_max = 1e5) %>% 
+         clean_names()
+      
+      # Exclude rows where poh length is "<24" or ">32" as these are from some sort of summary table and not from the main datasheet
+      df <- df %>% filter(!(poh_length_cm %in% c("<24", ">32")))
+      
+      # Convert columns to the most appropriate data types
+      df <- type.convert(df, as.is = TRUE)      
+      return(df)
+    })
+  }
   
-  # Clean up column names
-  df <- df %>% clean_names()
+  # Combine all data frames into one
+  df <- bind_rows(df_list)
   
   # Create a named list of old and new column names
   name_changes <- list(
@@ -45,7 +62,7 @@ read_and_clean <- function(file) {
   }
   
   # Convert dates to a standard format
-  df$date <- as.Date(df$date, format = "%Y%m%d")
+  df$date <- as.Date(df$date)
   
   df$year <- year(df$date)
   
@@ -61,6 +78,7 @@ read_and_clean <- function(file) {
 #bind all files together
 deadpitch.df <- data.frame()
 for(i in 1:length(file_list)){
+  print(i)
   deadpitch.df <- bind_rows(deadpitch.df, read_and_clean(file_list[i]))
 }
 
@@ -70,6 +88,6 @@ str(deadpitch.df)
 
 ggplot(deadpitch.df, aes(x = year, y = fork_length_cm, group = year))+
   geom_boxplot()
-
+  
 ggplot(deadpitch.df, aes(x = year, y = poh_length_cm, group = year))+
   geom_boxplot()
