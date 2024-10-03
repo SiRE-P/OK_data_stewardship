@@ -86,6 +86,12 @@ for(i in 1:length(file_list)){
 summary(deadpitch.df)
 str(deadpitch.df)
 
+#check for multiples of ona_number
+deadpitch.df %>% 
+  group_by(ona_number) %>% 
+  mutate(n = n()) %>% 
+  filter(n > 1)
+
 ggplot(deadpitch.df, aes(x = year, y = fork_length_cm, group = year))+
   geom_boxplot()
   
