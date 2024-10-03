@@ -2,3 +2,4 @@
 
 - "./data/deadpitch/SK Adult.BioData Collection Sheet 2015.xlsx" - has two copies of RawData - using the first one for now.
 - tag number in "./data/deadpitch/SK Adult.BioData Collection Sheet 2015.xlsx" does not match format of tag number in other sheets, but it looks like Tag Number(s) does - using Tag Numbers(s) for now
+- what does the table of data at the bottom of  "./data/deadpitch/Penticton Channel deadpitch 2019-2021.xlsx" sheet 2021 correspond to? It looks like it is some sort of summary - exlcuding for now.  
