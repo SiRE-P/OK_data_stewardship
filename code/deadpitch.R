@@ -5,7 +5,7 @@ library(readxl)
 #get list of excel files in directory
 file_list <- list.files(path = "./data/deadpitch/", pattern = "*.xlsx", full.names = TRUE)
 
-file <- file_list[1]
+file <- file_list[7]
 #read each file and put names in standard format
 read_and_clean <- function(file) {
   sheet_names <- excel_sheets(file)
@@ -56,6 +56,10 @@ read_and_clean <- function(file) {
     }
   }
   
+  if(file == "./data/deadpitch/SK Adult.BioData Collection Sheet 2014.xlsx"){
+    df <- rename(df, location = okr_section, okr_section = location)
+  }
+  
   # Check for the date column under different names and rename if necessary
   if (!"date" %in% names(df)) {
     stop("No date column found")
@@ -82,6 +86,14 @@ for(i in 1:length(file_list)){
   deadpitch.df <- bind_rows(deadpitch.df, read_and_clean(file_list[i]))
 }
 
+deadpitch.df$okr_section <- str_to_lower(deadpitch.df$okr_section)
+deadpitch.df$location <- str_to_lower(deadpitch.df$location)
+
+unique_locations <- deadpitch.df %>% 
+  group_by(okr_section, location, year) %>% 
+  summarise(n = n()) %>% 
+  arrange(year)
+
 #checks on dataframe
 summary(deadpitch.df)
 str(deadpitch.df)
@@ -93,7 +105,10 @@ deadpitch.df %>%
   filter(n > 1)
 
 ggplot(deadpitch.df, aes(x = year, y = fork_length_cm, group = year))+
-  geom_boxplot()
+  geom_boxplot()+
+  facet_grid(sampling_event~okr_section)
   
 ggplot(deadpitch.df, aes(x = year, y = poh_length_cm, group = year))+
-  geom_boxplot()
+  geom_boxplot()+
+  facet_grid(sampling_event~okr_section)
+

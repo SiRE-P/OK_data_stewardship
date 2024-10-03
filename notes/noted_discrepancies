@@ -4,3 +4,4 @@
 - tag number in "./data/deadpitch/SK Adult.BioData Collection Sheet 2015.xlsx" does not match format of tag number in other sheets, but it looks like Tag Number(s) does - using Tag Numbers(s) for now
 - what does the table of data at the bottom of  "./data/deadpitch/Penticton Channel deadpitch 2019-2021.xlsx" sheet 2021 correspond to? It looks like it is some sort of summary - exlcuding for now. 
 - ONA number 20350036 occurs twice in the dataset, once on 2020-11-03, and once on 2020-10-22. Both have the same otolith vial number. Are these the same fish or is there an error? They are in consecutive rows (37, 37) in the datasheet - "./data/deadpitch/Shingle deadpitch 2019-2021 (002).xlsx" and these are in the october dates. Is the November date an error? 
+- "./data/deadpitch/SK Adult.BioData Collection Sheet 2014.xlsx" has okr_section and location flipped
