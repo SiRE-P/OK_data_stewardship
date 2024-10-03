@@ -1,3 +1,4 @@
 #List of discrepancies found in data that need to be checked
 
 - "./data/deadpitch/SK Adult.BioData Collection Sheet 2015.xlsx" - has two copies of RawData - using the first one for now.
+- tag number in "./data/deadpitch/SK Adult.BioData Collection Sheet 2015.xlsx" does not match format of tag number in other sheets, but it looks like Tag Number(s) does - using Tag Numbers(s) for now
