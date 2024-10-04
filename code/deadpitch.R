@@ -56,7 +56,7 @@ read_and_clean <- function(file) {
     }
   }
   
-  if(file == "./data/deadpitch/SK Adult.BioData Collection Sheet 2014.xlsx"){
+  if(file == "../../SIRE_data/deadpitch/SK Adult.BioData Collection Sheet 2014.xlsx"){
     df <- rename(df, location = okr_section, okr_section = location)
   }
   
