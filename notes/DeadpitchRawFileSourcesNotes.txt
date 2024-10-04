@@ -1,0 +1,125 @@
+2000 sockeye biosampling.xls
+From: Margot's files
+
+2001 Sox Biosamples.xls
+From: Margot's files
+-needs comparison to the other two files that are in Margot's \!ADULT SOCKEYE\ADULT BIOLOGICAL TRAITS\2001
+-or see if there is another place where those files were stored
+
+2002 Sox Biosample MSversion.xls
+From: Margot's files, 
+-not an original; can we find one on the ONA servers? or cross-check Paul?
+
+2003 all data.xls
+From: Margot's files
+
+2004 Biosampling.xls
+From: Margot's files
+-might be good to compare the ageing at least to some of the other files in ADULT BIOLOGICAL TRAITS\2004
+
+2005 sk-age.xls
+From: Margot's files
+***not sure if "2005 ONA broodstock data.xls" is relevant; there's some deadpitch data in that file, too
+
+2006 Adult Sx Biosampling.xls
+From: Margot's files
+-lots of files in this folder \ADULT BIOLOGICAL TRAITS\2006; maybe needs some cross-check
+
+Skaha_Osys_Dedptch_07.xls
+From: Margot's files
+-broodstock again, also test fishery
+-check thermal marks file?
+
+!Deadpitch_08_MASTER.xls
+From: Margot's files
+-there seems to be an original file in there too, "Deadpitch_08.xls"
+
+Deadpitch Master 2009.xls
+Age_Size_Distribution (2009).xls
+From: Margot's files
+(I added the 2009in parentheses)
+-compare to some of the other files?
+
+!Deadpitch Master 2010.xls
+From: Margot's files
+-thermal marks may be in a different file?
+
+!Copy of Deadpitch_11.xls
+From: Margot's files
+-needs cross-checking of files
+
+Pent Channel Deadpitch 2011.Dec.EJJ.RB.xlsx
+From: Margot's files
+-the ages look wrong, all .0
+
+THESE WILL HAVE TO BE re-UPLOADED:
+
+!2012 Ok Sox Biodata correct ages.xlsx  --tried to delete, but the name is still there
+2012 Ok Sox Ages.xlsx
+From: Margot's files
+
+
+
+
+
+SK Adult.BioData Collection Sheet 2014.xlsx
+From: Chelsea email to Braden 2023.07.02 
+
+SK Adult.BioData Collection Sheet 2015.xlsx
+From: Chelsea email to Braden 2023.07.02 
+
+Deadpitch Adult.BioData 2016_17-6-27.xlsx
+From: Chelsea email to Braden 2023.07.02 
+
+Deadpitch Adult.BioData_17.xlsx
+From: Chelsea email to Braden 2023.07.02 
+
+! Deadpitch Adult.BioData 10-20-17.xlsx
+From: Margot's files
+-needs comparison to other 2017 file (oops uploaded 2017 twice)
+
+
+
+
+
+
+
+
+Deadpitch Adult.BioData 12-2-19.xlsx
+From: Chelsea email to Braden 2023.07.02 
+
+FWMT Deadpitch Adult.BioData_FINAL .xlsx (This is also 2019)
+From: Chelsea email to Braden 2023.07.02 
+-Needs comparison to other 2019 file
+-also compare to "2019 Deadpitch Adult.BioData_FINAL 20.11.03.xlsx", which seems to be a later version that came to us after the Chelsea email to Braden
+
+
+
+Penticton Channel deadpitch 2019-2021.xlsx
+-needs comparison to other 2019-2021 files (looks like overlap)
+
+Shingle deadpitch 2019-2021 (002).xlsx
+-needs comparison to other 2019-2021 files (looks like overlap)
+
+
+
+FWMT Deadpitch Adult.BioData 2020.xlsx
+From: Chelsea email to Braden 2023.07.02 
+
+FWMT Deadpitch Adult.BioData 2021.xlsx
+From: Lynnea to me 2/8/2023
+
+*FWMT Deadpitch Adult.BioData 2022.xlsx
+WE DON'T HAVE THE FINAL QA/QC VERSION OF THIS; I HAVE ASKED FOR IT (Oct3,2024)
+
+*2023 Osoyoos deadpitch (Pen Chan still haden't been read back in Mar when I got a version of this)
+
+
+
+
+
+
+
+
+
+
