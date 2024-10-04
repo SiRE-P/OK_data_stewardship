@@ -3,7 +3,7 @@ library(janitor)
 library(readxl)
 
 #get list of excel files in directory
-file_list <- list.files(path = "./data/deadpitch/", pattern = "*.xlsx", full.names = TRUE)
+file_list <- list.files(path = "../../SIRE_data/deadpitch/", pattern = "*.xlsx", full.names = TRUE)
 
 file <- file_list[7]
 #read each file and put names in standard format
