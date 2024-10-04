@@ -1,3 +1,13 @@
+---- WAITING FOR ONA-----
+(2022)
+*FWMT Deadpitch Adult.BioData 2022.xlsx
+WE DON'T HAVE THE FINAL QA/QC VERSION OF THIS; I HAVE ASKED FOR IT (Oct3,2024)
+
+(2023)
+*2023 Osoyoos deadpitch (Pen Chan still hadn't been read back in Mar when I got a version of this)
+------------end of waiting for ONA------------
+
+
 
 (2000)
 2000 sockeye biosampling.xls
@@ -56,64 +66,38 @@ From: Margot's files
 From: Margot's files
 -thermal marks may be in a different file?
 
-(2011)
-Pent Channel Deadpitch 2011.Dec.EJJ.RB.xlsx
-From: Margot's files
--the ages look wrong, all .0
-
-!Copy of Deadpitch_11.xls
-From: Margot's files
--needs cross-checking of files
-
-
-(2012)
-THESE WILL HAVE TO BE re-UPLOADED:
-
-!2012 Ok Sox Biodata correct ages.xlsx  --tried to delete, but the name is still there
-2012 Ok Sox Ages.xlsx
-From: Margot's files
-
-
-(2013)
-
-
-
-
-
-
-
 
 
 
 
 ---added to NOT INCORP folder -----
 
-(2013)
-!SK Adult BioData Collection Sheet 2013 2Jun14.xlsx
+(2011)
+Pent Channel Deadpitch 2011.Dec.EJJ.RB.xls
+From: Margot's files
+-the ages look wrong, all .0 -- maybe KO?
+
+!Copy of Deadpitch_11.xls
+From: Margot's files
+-needs cross-checking of files
+
+!Ages Adult Sockeye 2011.xls
 From: Margot's files
 
-(2017)
-Deadpitch Adult.BioData_17.xlsx
-From: Chelsea email to Braden 2023.07.02 
 
-(2021)
-FWMT Deadpitch Adult.BioData 2021.xlsx
-From: Lynnea to me 2/8/2023
+(2012)
+!2012 Ok Sox Biodata correct ages.xlsx  --tried to delete, but the name is still there
+From: Margot's files
 
-
-
-
----- WAITING FOR ONA-----
-(2022)
-*FWMT Deadpitch Adult.BioData 2022.xlsx
-WE DON'T HAVE THE FINAL QA/QC VERSION OF THIS; I HAVE ASKED FOR IT (Oct3,2024)
-
-(2023)
-*2023 Osoyoos deadpitch (Pen Chan still haden't been read back in Mar when I got a version of this)
+ 
 
 
 
 --------INCORPORATED ---------------------
+
+(2013)
+!SK Adult BioData Collection Sheet 2013 2Jun14.xlsx
+From: Margot's files
 
 (2014)
 SK Adult.BioData Collection Sheet 2014.xlsx
@@ -128,7 +112,8 @@ Deadpitch Adult.BioData 2016_17-6-27.xlsx
 From: Chelsea email to Braden 2023.07.02 
 
 (2017)
-
+Deadpitch Adult.BioData_17.xlsx
+From: Chelsea email to Braden 2023.07.02
 
 (2018)
 FWMT Deadpitch Adult.BioData_FINAL .xlsx (This is 2018)
@@ -149,6 +134,10 @@ Shingle deadpitch 2019-2021 (002).xlsx
 (2020)
 FWMT Deadpitch Adult.BioData 2020.xlsx
 From: Chelsea email to Braden 2023.07.02 
+
+(2021)
+FWMT Deadpitch Adult.BioData 2021.xlsx
+From: Lynnea to me 2/8/2023
 
 
 
