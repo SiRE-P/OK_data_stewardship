@@ -7,31 +7,8 @@ WE DON'T HAVE THE FINAL QA/QC VERSION OF THIS; I HAVE ASKED FOR IT (Oct3,2024)
 *2023 Osoyoos deadpitch (Pen Chan still hadn't been read back in Mar when I got a version of this)
 ------------end of waiting for ONA------------
 
+THESE ARE THE ONES I ORIGINALLY CHOSE TO UPLOAD (where they differ from BJ's)
 
-
-(2000)
-2000 sockeye biosampling.xls
-From: Margot's files
-
-(2001)
-2001 Sox Biosamples.xls
-From: Margot's files
--needs comparison to the other two files that are in Margot's \!ADULT SOCKEYE\ADULT BIOLOGICAL TRAITS\2001
--or see if there is another place where those files were stored
-
-(2002)
-2002 Sox Biosample MSversion.xls
-From: Margot's files, 
--not an original; can we find one on the ONA servers? or cross-check Paul?
-
-(2003)
-2003 all data.xls
-From: Margot's files
-
-(2004)
-2004 Biosampling.xls
-From: Margot's files
--might be good to compare the ageing at least to some of the other files in ADULT BIOLOGICAL TRAITS\2004
 
 (2005)
 2005 sk-age.xls
@@ -41,18 +18,12 @@ From: Margot's files
 (2006)
 2006 Adult Sx Biosampling.xls
 From: Margot's files
--lots of files in this folder \ADULT BIOLOGICAL TRAITS\2006; maybe needs some cross-check
-
-(2007)
-Skaha_Osys_Dedptch_07.xls
-From: Margot's files
--broodstock again, also test fishery
--check thermal marks file?
 
 (2008)
 !Deadpitch_08_MASTER.xls
 From: Margot's files
 -there seems to be an original file in there too, "Deadpitch_08.xls"
+
 
 (2009)
 Deadpitch Master 2009.xls
@@ -68,11 +39,66 @@ From: Margot's files
 
 
 
-
-
+-------------------------------------
+-----------------------------------
 ---added to NOT INCORP folder -----
+(2000)
+2000 sockeye biosampling.xls
 
-(2011)
+(2001)
+2001 Sox Biosamples.xlsx
+From: Margot's files (the file that BJ used)
+
+(2002)
+2002 Sox Biosample MSversion.xls
+From: Margot's files (the file that BJ used)
+
+(2003)
+2003 all data.xls
+From: Margot's files (the file that BJ used)
+
+(2004)
+2004 Biosampling.xlsx
+From: Margot's files (the file that BJ used)
+
+(2005)
+2005 Biosample Summary.xlsx
+From: Margot's files (the file that BJ used)
+
+(2006)
+!Adults 2006 Summary.xlsx
+From: Margot's files (the file that BJ used)
+
+(2007)
+Skaha_Osys_Dedptch_07.xls
+From: Margot's files (the file that BJ used)
+-broodstock again, also test fishery
+-check thermal marks file?
+
+(2008)
+!Adults 2008 Summary_all_data.xlsx
+From: Margot's files (the file that BJ used)
+
+(2009)
+Deadpitch_Thermal_Marks_2009.xlsx
+From: Margot's files (the file that BJ used)
+
+(2010)
+!Adults Summary 2010.xls
+From: Margot's files (the file that BJ used)
+
+(2011)   --  add to the others? --
+!Deadpitch Data LW 5_Mar_2012.xlsx
+From: Margot's files (the file that BJ used)
+
+
+
+--------INCORPORATED ---------------------
+
+
+
+
+(2011)------
 Pent Channel Deadpitch 2011.Dec.EJJ.RB.xls
 From: Margot's files
 -the ages look wrong, all .0 -- maybe KO?
@@ -80,22 +106,24 @@ From: Margot's files
 !Copy of Deadpitch_11.xls
 From: Margot's files
 -needs cross-checking of files
+-check these input files against the one that BJ used
 
 !Ages Adult Sockeye 2011.xls
 From: Margot's files
+-check these input files against the one that BJ used
 
 
-(2012)
+
+-PT noted that in 2011, the lengths don't specify POH or FL; BJ assumed FL; maybe PT used distributions to show that they were actually FLs 
+
+
+
+(2012)------
 !2012 Ok Sox Biodata correct ages.xlsx  --tried to delete, but the name is still there
 From: Margot's files
 
- 
 
-
-
---------INCORPORATED ---------------------
-
-(2013)
+(2013)------
 !SK Adult BioData Collection Sheet 2013 2Jun14.xlsx
 From: Margot's files
 
