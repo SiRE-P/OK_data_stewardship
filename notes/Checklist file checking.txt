@@ -9,6 +9,7 @@ Things to check in the input files. Once checked, a note could be added to  "Dea
 -ONA fish numbers? PT can check for redundancy using code
 -Do we have the Broodstock data?
 -Do we have the Pen Chan / Skaha deadpitch? It goes back to **before there were Sox there, i.e., biosampling goes back to 2005 (and KO enumeration goes back to 2008 I think)
+-check against BJ's version (for some columns)
 
 
 -Margot's deadpitch files are available in this directory:
