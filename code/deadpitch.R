@@ -11,7 +11,209 @@ convert_to_decimal <- function(x) {
   }
 }
 
-#read each file and put names in standard format
+#2000####
+dp_2000 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2000 sockeye biosampling.xls", sheet = "Sheet1") %>% 
+  clean_names() %>% 
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(sex = case_when(female == 1 ~ "f", male == 1 ~ "m", TRUE ~ NA)) %>% 
+  mutate(date = convert_to_date(date)) %>%
+  mutate(weight_g = weight_kg * 1000) %>% 
+  mutate(age = as.character("age")) %>% 
+  select(date, sex, age, fork_length_cm, weight_g, location = sampling_location, comments, source)
+compare_df_cols(dp_2000)
+
+#2001####
+dp_2001 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2001 Sox Biosamples.xls", sheet = "DATA_ALL", na = "not taken") %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>%
+  mutate(fork_length_cm = nose_fork_length_mm /10) %>% 
+  mutate(poh_length_cm = poh_mm / 10) %>% 
+  mutate(age = as.character(as.numeric(age))) %>% 
+  select(date, fish_number, dfo_number, sex = sex_m_f, age, fork_length_cm, poh_length_cm, weight_g, location, fecundity_count_eggs, scales_taken_y_n = scales_y_n, head_taken_y_n = head_y_n, clips_or_hole_punch, crew)
+compare_df_cols(dp_2000, dp_2001)
+
+#2002####
+dp_2002 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2002 Sox Biosample MSversion.xls", sheet = "biosampling-ORIGINAL") %>% 
+  clean_names() %>%
+  filter(weight_g != "*") %>% 
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>%
+  mutate(fork_length_cm = fork_length_mm /10) %>% 
+  mutate(poh_length_cm = poh_mm / 10) %>%
+  mutate(age = as.character(age)) %>% 
+  mutate(weight_g = as.numeric(weight_g)) %>% 
+  select(date, fish_number, other_reference_number, sex, age, fork_length_cm, poh_length_cm, weight_g, location, fecundity_count_eggs = fecundity_egg_retention, scales_taken_y_n, head_taken_y_n, dna_punch_y_n, comments)
+compare_df_cols(dp_2000, dp_2001, dp_2002)
+
+#2003####
+dp_2003 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2003 all data.xls", sheet = "Orig Biosample Data") %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(sex = case_when(female == 1 ~ "f", male == 1 ~ "m", TRUE ~ NA)) %>% 
+  mutate(date = convert_to_date(date)) %>%
+  mutate(age = as.character(age)) %>% 
+  mutate(weight_g = as.numeric(weight)) %>% 
+  select(date, sex, age, fork_length_cm, weight_g, location = sampling_location, source, comments = age_comment)
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003)
+
+#2004####
+dp_2004 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2004 Biosampling.xls", sheet = "data entry") %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date_hold = mdy(date)) %>% 
+  mutate(date_hold2 = convert_to_date(ifelse(grepl("\\d{5}", date), date, NA))) %>% 
+  mutate(date = convert_to_date(ifelse(is.na(date_hold2), as.character(date_hold), as.character(date_hold2)))) %>% 
+  mutate(weight_g = as.numeric(weight_g)) %>% 
+  mutate(fork_length_cm = as.numeric(length_cm)) %>% 
+  #mutate(ona_no = as.numeric(ona_no)) %>% 
+  select(date, ona_number = ona_no, species, sex = sex_m_f, fork_length_cm, weight_g, location = lake_river, comments, scales_taken_y_n = scales_y_n, stomach_y_n, eggs_y_n, kidney_vial, ovarian_fluid_y_n, crew)
+
+ages_2004 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2004 Biosampling.xls", sheet = "Ages from PADS", skip = 2) %>% 
+  clean_names()
+
+dp_2004 <- left_join(dp_2004, ages_2004 %>% 
+            select(ona_number, x3) %>% 
+            mutate(age = as.character(as.numeric(x3)/10))) %>%  #PT - confirmed that this does this correctly. But it does drop the 1Fs
+            select(-x3) %>% 
+  mutate(ona_number = as.numeric(ona_number))
+  
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004)
+
+#2005####
+dp_2005 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2005 Biosample Summary.xls", sheet = "mdb transfer") %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>%
+  mutate(age = as.character(age)) %>% 
+  select(date, sample_number, location, species, sex, fork_length_cm = length_cm, weight_g, age, source = data_source)
+  
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005)
+
+#2006####
+#no ages in 2006 dead pitch - they are available in the brood stock fish, but those are not included because they select for large fish
+#only intact fish are sized
+#notes available in the INFO tab of datasheet
+dp_2006 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Adults 2006 Summary.xls", sheet = "Deadpitch") %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>%
+  select(date, location = reach, sex, fork_length_cm = length_cm, comments)
+
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006)
+
+#2007####
+dp_2007 <- read_excel("../../SIRE_data/deadpitch/2000-2012/Skaha_Osys_Dedptch_07.xls", sheet = "Deadpitch", skip = 6) %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>% 
+  mutate(
+    gilbert_rich_age = as.numeric(gilbert_rich_age),
+    total_age = as.numeric(substr(gilbert_rich_age , 1, nchar(gilbert_rich_age ) - 1)),
+    age_to_sea = as.numeric(substr(gilbert_rich_age , nchar(gilbert_rich_age ), nchar(gilbert_rich_age ))),
+    age = ifelse(is.na(gilbert_rich_age), NA, paste0(age_to_sea - 1, ".", total_age - age_to_sea))) %>% 
+  mutate(possibly_mixed_up = ifelse(ona_number > 14769 & ona_number < 14870, TRUE, FALSE)) %>% 
+  select(date, ona_number, species, fork_length_cm = length_cm, thermal_marks, age, sex = sex_m_f, location = comments, possibly_mixed_up)
+
+dp_2007 %>% 
+  group_by(age) %>% 
+  mutate(n = n()) %>% filter(n > 1) %>% 
+  ggplot(aes(y = fork_length_cm, x = possibly_mixed_up, group = possibly_mixed_up, color = possibly_mixed_up))+
+  geom_violin()+
+  facet_wrap(~age)
+
+#the sheet says that some fish were possibly mixed up in the sample trays. Based on length-age relationship, I don't think this occurred
+
+dp_2007$possibly_mixed_up <- NULL
+
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007)
+
+#2008####
+dp_2008 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Adults 2008 Summary_all_data.xls", sheet = "Deadpitch Data") %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>% 
+  mutate(age = as.character(age)) %>% 
+  select(date, location, ona_number, species, sex, fork_length_cm = length_cm, age, thermal_marks, comments)
+
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008)
+
+#2009####
+dp_2009 <- read_excel("../../SIRE_data/deadpitch/2000-2012/Deadpitch_Thermal_Marks_2009.xls", sheet = "Original", skip = 6) %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>% 
+  mutate(age = as.character(age)) %>% 
+  select(date, location, ona_number, age, sex = sex_m_f, fork_length_cm = length_cm, spawned_y_n, thermal_marks, comments) %>% 
+  filter(!is.na(date))
+
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009)
+
+#2010####
+dp_2010 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Adults Summary 2010.xls", sheet = "Deadpitch_Data", na = "not aged") %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>% 
+  mutate(age = as.character(as.numeric(age))) %>% 
+  select(date, location, okr_section = location_b, ona_number, age, sex = sex_m_f, fork_length_cm = length_cm, spawned_y_n, thermal_marks, comments) %>% 
+  filter(!is.na(date))
+
+tail(dp_2010)
+table(dp_2010$age)
+
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009, dp_2010)
+
+#2011####
+#note that the spreadsheet is dated 2012 but the data are from 2011
+#there is a Deadpitch_Original (2) sheet that also has PBS ages, but these seem to be out of order in some cases 
+dp_2011 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Deadpitch Data LW 5_Mar_2012.xls", sheet = "Deadpitch_Original", skip = 6) %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>% 
+  mutate(age = european_age) %>% 
+  mutate(length_cm = as.numeric(length_cm)) %>% 
+  select(date, location, ona_number, age, sample_quality, sex = sex_m_f, fork_length_cm = length_cm, spawned_y_n, thermal_marks, dna_y_n, age_comment = comment, comments) %>% 
+  filter(!is.na(date))
+
+tail(dp_2011)
+table(dp_2011$age)
+
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009, dp_2010, dp_2011)
+
+
+#2012####
+dp_2012 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!2012 Ok Sox Biodata correct ages.xlsx", sheet = "Biosampling", skip = 6) %>% 
+  clean_names() %>% 
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>% 
+  select(date, location, sex = sex_m_f, fork_length_cm, poh_length_cm, spawned_y_n = spawned_y_n_partial, dna_y_n, comments, vial_number = otolith_vial_number) %>% 
+  filter(!is.na(date)) %>% 
+  filter(!is.na(location))
+  
+ages_2012 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!2012 Ok Sox Biodata correct ages.xlsx", sheet = "Aged Otos with Biodata") %>% 
+  clean_names() %>% 
+  select(vial_number, age = age_pbs_lab, age_ona_lab, thermal_marks) %>% 
+  mutate(age = as.character(as.numeric(age)))
+
+dp_2012 <- left_join(dp_2012, ages_2012) %>% 
+  select(-vial_number)
+
+tail(dp_2012)
+table(dp_2011$age)
+
+compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009, dp_2010, dp_2011, dp_2012)
+
+#combine 2000-2012 data####
+dp_2000_2012 <- bind_rows(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009, dp_2010, dp_2011, dp_2012) %>% 
+  mutate(age = as.character(as.numeric(age))) %>% 
+  mutate(fork_length_cm = ifelse(fork_length_cm == 0, NA, fork_length_cm)) %>% 
+  mutate(species = str_to_lower(species)) %>% 
+  filter(species %in% c("sk", "ko", NA)) %>% 
+  mutate(chinook = grepl(x = comments, "chinook", ignore.case = TRUE)) %>% 
+  filter(chinook == FALSE)
+
+#post 2012 data####
+#function that reads each file and put names in standard format
 read_and_clean <- function(file) {
   sheet_names <- excel_sheets(file)
   
@@ -53,7 +255,8 @@ read_and_clean <- function(file) {
   }
   
   # Combine all data frames into one
-  df <- bind_rows(df_list)
+  df <- bind_rows(df_list) %>% 
+    remove_empty(c("rows", "cols"))
   
   # Create a named list of old and new column names
   name_changes <- list(
@@ -121,204 +324,103 @@ read_and_clean <- function(file) {
 #get list of excel files in directory
 file_list <- list.files(path = "../../SIRE_data/deadpitch/modern_era/", pattern = "*.xlsx", full.names = TRUE)
 
-file <- file_list[11]
-
 #bind all files together
-deadpitch.df <- data.frame()
+df_2013_onward <- data.frame()
 for(i in 1:length(file_list)){
   print(i)
-  deadpitch.df <- bind_rows(deadpitch.df, read_and_clean(file_list[i]))
+  df_2013_onward <- bind_rows(df_2013_onward, read_and_clean(file_list[i]))
 }
 
-#2000####
-dp_2000 <- read_excel("../../SIRE_data/deadpitch/2000-/2000 sockeye biosampling.xls", sheet = "Sheet1") %>% 
-  clean_names() %>% 
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(sex = case_when(female == 1 ~ "f", male == 1 ~ "m", TRUE ~ NA)) %>% 
-  mutate(date = convert_to_date(date)) %>%
-  mutate(weight_g = weight_kg * 1000) %>% 
-  mutate(age = as.character("age")) %>% 
-  select(date, sex, age, fork_length_cm, weight_g, location = sampling_location, comments, source)
-compare_df_cols(dp_2000)
+#combine 2000-2012 data with post 2012 data####
+compare_df_cols(df_2013_onward, dp_2000_2012)
+tabyl(df_2013_onward, sampling_event, year)
 
-#2001####
-dp_2001 <- read_excel("../../SIRE_data/deadpitch/2000-/2001 Sox Biosamples.xls", sheet = "DATA_ALL", na = "not taken") %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>%
-  mutate(fork_length_cm = nose_fork_length_mm /10) %>% 
-  mutate(poh_length_cm = poh_mm / 10) %>% 
-  select(date, fish_number, dfo_number, sex = sex_m_f, age, fork_length_cm, poh_length_cm, weight_g, location, fecundity_count_eggs, scales_taken_y_n = scales_y_n, head_taken_y_n = head_y_n, clips_or_hole_punch, crew)
-compare_df_cols(dp_2000, dp_2001)
 
-#2002####
-dp_2002 <- read_excel("../../SIRE_data/deadpitch/2000-/2002 Sox Biosample MSversion.xls", sheet = "biosampling-ORIGINAL") %>% 
-  clean_names() %>%
-  filter(weight_g != "*") %>% 
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>%
-  mutate(fork_length_cm = fork_length_mm /10) %>% 
-  mutate(poh_length_cm = poh_mm / 10) %>%
-  mutate(age = as.character(age)) %>% 
-  mutate(weight_g = as.numeric(weight_g)) %>% 
-  select(date, fish_number, other_reference_number, sex, age, fork_length_cm, poh_length_cm, weight_g, location, fecundity_count_eggs = fecundity_egg_retention, scales_taken_y_n, head_taken_y_n, dna_punch_y_n, comments)
-compare_df_cols(dp_2000, dp_2001, dp_2002)
+deadpitch.df <- dp_2000_2012 %>% 
+  select(date, okr_section, location, ona_number, sex, dfo_age = age, ona_age = age_ona_lab, age_comment, age_sample_quality = sample_quality, fork_length_cm, poh_length_cm, weight_g, thermal_marks, species, spawned = spawned_y_n, comments) %>% 
+  bind_rows(
+    df_2013_onward %>% 
+  filter(sampling_event == "Deadpitch") %>% #remove broodstock data because it is not random and selects for larger individuals
+  select(date, okr_section, location, ona_number, sex, ona_age = european_age, dfo_age = dfo_age_from_otoliths, age_comment = aging_comments, age_sample_quality, fork_length_cm, poh_length_cm, weight_g, hatchery,  spawned, comments)
+  )
 
-#2003####
-dp_2003 <- read_excel("../../SIRE_data/deadpitch/2000-/2003 all data.xls", sheet = "Orig Biosample Data") %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(sex = case_when(female == 1 ~ "f", male == 1 ~ "m", TRUE ~ NA)) %>% 
-  mutate(date = convert_to_date(date)) %>%
-  mutate(age = as.character(age)) %>% 
-  mutate(weight_g = as.numeric(weight)) %>% 
-  select(date, sex, age, fork_length_cm, weight_g, location = sampling_location, source, comments = age_comment)
-compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003)
 
-#2004####
-dp_2004 <- read_excel("../../SIRE_data/deadpitch/2000-/2004 Biosampling.xls", sheet = "data entry") %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date_hold = mdy(date)) %>% 
-  mutate(date_hold2 = ifelse(grepl("\\d{5}", date), date, NA)) %>% 
-  mutate(date = convert_to_date(ifelse(is.na(date_hold), convert_to_date(date_hold2), date_hold))) %>% 
-  mutate(weight_g = as.numeric(weight_g)) %>% 
-  mutate(fork_length_cm = as.numeric(length_cm)) %>% 
-  select(date, sex, ona_number = ona_no, species, sex = sex_m_f, fork_length_cm, weight_g, location = lake_river, comments, scales_taken_y_n = scales_y_n, stomach_y_n, eggs_y_n, kidney_vial, ovarian_fluid_y_n, crew)
-
-ages_2004 <- read_excel("../../SIRE_data/deadpitch/2000-/2004 Biosampling.xls", sheet = "Ages from PADS", skip = 2) %>% 
-  clean_names()
-
-dp_2004 <- left_join(dp_2004, ages_2004 %>% 
-            select(ona_number, x3) %>% 
-            mutate(age = as.character(as.numeric(x3)/10))) %>%  #PT - confirmed that this does this correctly. But it does drop the 1Fs
-            select(-x3)
-  
-compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004)
-
-#2005####
-dp_2005 <- read_excel("../../SIRE_data/deadpitch/2000-/2005 Biosample Summary.xls", sheet = "mdb transfer") %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>%
-  mutate(age = as.character(age)) %>% 
-  select(date, sample_number, location, species, sex, fork_length_cm = length_cm, weight_g, age, source = data_source)
-  
-compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005)
-
-#2006####
-#no ages in 2006 dead pitch - they are available in the brood stock fish, but those are not included because they select for large fish
-#only intact fish are sized
-#notes available in the INFO tab of datasheet
-dp_2006 <- read_excel("../../SIRE_data/deadpitch/2000-/!Adults 2006 Summary.xls", sheet = "Deadpitch") %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>%
-  select(date, location = reach, sex, fork_length_cm = length_cm, comments)
-
-compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006)
-
-#2007####
-dp_2007 <- read_excel("../../SIRE_data/deadpitch/2000-/Skaha_Osys_Dedptch_07.xls", sheet = "Deadpitch", skip = 6) %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>% 
+#clean up combined data###
+deadpitch.df <- deadpitch.df %>% 
+  mutate(year = year(date)) %>% 
+  mutate(okr_section = str_to_lower(okr_section),
+       location = str_to_lower(location),
+       sex = str_to_lower(sex),
+       ona_age = as.character(ona_age)) %>% 
+  mutate(hatchery_hold = case_when(thermal_marks %in% c("N", "N,N", "N,N,N") ~ "natural",
+                              thermal_marks %in% c("lost", "UNK") ~ "unknown",
+                              is.na(thermal_marks) ~ "unknown",
+                              TRUE ~ "hatchery")) %>% 
+  mutate(hatchery = ifelse(!is.na(hatchery), str_to_lower(hatchery), hatchery_hold)) %>% 
+  select(-hatchery_hold) %>% 
   mutate(
-    gilbert_rich_age = as.numeric(gilbert_rich_age),
-    total_age = as.numeric(substr(gilbert_rich_age , 1, nchar(gilbert_rich_age ) - 1)),
-    age_to_sea = as.numeric(substr(gilbert_rich_age , nchar(gilbert_rich_age ), nchar(gilbert_rich_age ))),
-    age = ifelse(is.na(gilbert_rich_age), NA, paste0(age_to_sea - 1, ".", total_age - age_to_sea))) %>% 
-  mutate(possibly_mixed_up = ifelse(ona_number > 14769 & ona_number < 14870, TRUE, FALSE)) %>% 
-  select(date, ona_number, species, fork_length_cm = length_cm, thermal_marks, age, sex = sex_m_f, location = comments, possibly_mixed_up)
+    location = str_to_lower(location),  # Convert to lowercase
+    location = str_remove(location, "^[0-9]+:"),
+    location = str_trim(location),  # Remove extra spaces
+    location = str_replace_all(location, " to ", " - "), # standardize separators
+    location = str_remove(location, ";.*"), #remove pit tag entries in location
+    location = str_replace_all(location, " 97", ""),  # Remove "97 from hwy"
+    location = str_replace_all(location, "\\.", ""),  # Remove periods
+    location = str_replace_all(location, "broodstock$", "broodstock site"),  # Add "site" to "broodstock" when it's missing
+    location = str_replace_all(location, "^enhanced - golf$", "enhanced section - golf bridge"),
+    location = str_replace_all(location, "^(golf - kvr|golf bridge - kvr|golf bridge - kvr pilings)$", "golf bridge - kvr bridge"),
+    location = str_replace_all(location, "^(golf - kvr|golf bridge - kvr|golf bridge - kvr pilings)$", "golf bridge - kvr bridge"),
+    location = str_replace_all(location, "ok falls - vds 17$|okanagan provincial park - vds 17", "ok falls prov park - vds 17"),
+    location = str_replace_all(location, "^hwy - enhanced$", "hwy bridge - enhanced section")
+  ) %>% 
+  mutate(age = ifelse(!is.na(dfo_age), dfo_age, ona_age)) %>% 
+  mutate(age_agrees = ifelse(dfo_age == ona_age, "Y", "N")) %>%  #make column to indicate if the dfo and ona_ages agree
+  mutate(age_agrees = ifelse(is.na(age_agrees), "one est.", age_agrees)) %>% 
+  mutate(age_source = ifelse(!is.na(dfo_age), "DFO", ifelse(!is.na(ona_age), "ONA", NA)))
 
-dp_2007 %>% 
-  group_by(age) %>% 
-  mutate(n = n()) %>% filter(n > 1) %>% 
-  ggplot(aes(y = fork_length_cm, x = possibly_mixed_up, group = possibly_mixed_up, color = possibly_mixed_up))+
-  geom_violin()+
-  facet_wrap(~age)
+tabyl(deadpitch.df, year)
+tabyl(deadpitch.df, dfo_age, year)
+tabyl(deadpitch.df, ona_age, year)
+tabyl(deadpitch.df, dfo_age)
+tabyl(deadpitch.df, ona_age)
+tabyl(deadpitch.df, thermal_marks)
+tabyl(deadpitch.df, hatchery, year)
+tabyl(deadpitch.df, location, year)
+tabyl(deadpitch.df, age, year)
+tabyl(deadpitch.df, age_agrees, year)
+tabyl(deadpitch.df, age_source, year)
 
-#the sheet says that some fish were possibly mixed up in the sample trays. Based on length-age relationship, I don't think this occurred
+deadpitch.df %>% 
+  filter(poh_length_cm > 10) %>% 
+  ggplot(aes(x = poh_length_cm, y = fork_length_cm))+
+  geom_point()+
+  geom_smooth(method = 'lm')
 
-dp_2007$possibly_mixed_up <- NULL
-
-compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007)
-
-#2008####
-dp_2008 <- read_excel("../../SIRE_data/deadpitch/2000-/!Adults 2008 Summary_all_data.xls", sheet = "Deadpitch Data") %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>% 
-  mutate(age = as.character(age)) %>% 
-  select(date, location, ona_number, species, sex, fork_length_cm = length_cm, age, thermal_marks, comments)
-
-compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008)
-
-#2009####
-dp_2009 <- read_excel("../../SIRE_data/deadpitch/2000-/Deadpitch_Thermal_Marks_2009.xls", sheet = "Original", skip = 6) %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>% 
-  mutate(age = as.character(age)) %>% 
-  select(date, location, ona_number, age, sex = sex_m_f, fork_length_cm = length_cm, spawned_y_n, thermal_marks, comments) %>% 
-  filter(!is.na(date))
-
-compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009)
-
-#2010####
-dp_2010 <- read_excel("../../SIRE_data/deadpitch/2000-/!Adults Summary 2010.xls", sheet = "Deadpitch_Data", na = "not aged") %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>% 
-  mutate(age = as.character(as.numeric(age))) %>% 
-  select(date, location, okr_section = location_b, ona_number, age, sex = sex_m_f, fork_length_cm = length_cm, spawned_y_n, thermal_marks, comments) %>% 
-  filter(!is.na(date))
-
-tail(dp_2010)
-table(dp_2010$age)
-
-compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009, dp_2010)
-
-#2011####
-#note that the spreadsheet is dated 2012 but the data are from 2011
-#there is a Deadpitch_Original (2) sheet that also has PBS ages, but these seem to be out of order in some cases 
-dp_2011 <- read_excel("../../SIRE_data/deadpitch/2000-/!Deadpitch Data LW 5_Mar_2012.xls", sheet = "Deadpitch_Original", skip = 6) %>% 
-  clean_names() %>%
-  remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>% 
-  mutate(age = european_age) %>% 
-  mutate(length_cm = as.numeric(length_cm)) %>% 
-  select(date, location, ona_number, age, sample_quality, sex = sex_m_f, fork_length_cm = length_cm, spawned_y_n, thermal_marks, dna_y_n, age_comment = comment, comments) %>% 
-  filter(!is.na(date))
-
-tail(dp_2011)
-table(dp_2011$age)
-
-compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009, dp_2010, dp_2011)
+length_model <- lm(fork_length_cm ~ poh_length_cm, deadpitch.df %>% filter(poh_length_cm>10))
+summary(length_model)
 
 
-#deal with 2012 data####
-biosampling <- read_excel("../../SIRE_data/deadpitch/2012_era/!2012 Ok Sox Biodata correct ages.xlsx", sheet = "Biosampling", skip = 6) %>% clean_names()
-aged_otos <- read_excel("../../SIRE_data/deadpitch/2012_era/!2012 Ok Sox Biodata correct ages.xlsx", sheet = "Aged Otos with Biodata") %>% clean_names()
 
-df <- left_join(biosampling, aged_otos %>% select(-date, - poh_length_cm, -fork_length_cm, dna_y_n, -sex_m_f, -spawned_y_n_partial, -location, -dna_y_n), by = c("otolith_vial_number"  = "vial_number"))
+deadpitch.df %>% 
+  ggplot(aes(x = age, y = fork_length_cm, color = age_source, shape = age_agrees))+
+  geom_jitter(height = 0, width = 0.25)+
+  facet_wrap(~year)+
+  scale_shape_manual(values = c(1, 16, 15))
 
-#names(df)[is.na(match(names(df),names(deadpitch.df)))]
-#names(deadpitch.df)
-#names(df)
+deadpitch.df %>% 
+  ggplot(aes(x = ona_age, y = fork_length_cm, color = factor(year)))+
+  geom_jitter(height = 0, width = 0.25)+
+  scale_color_manual(values = pals::cols25(n = length(unique(deadpitch.df$year))))+
+  facet_wrap(~year)
 
-df <- df %>% select(date, fish_number, poh_length_cm, fork_length_cm, sex = sex_m_f, european_age = age_ona_lab, dfo_age_from_otoliths = age_pbs_lab, spawned = spawned_y_n_partial, dna_y_n, location, comments, otolith_0_1_2 = otoliths_0_1_2, otolith_tray_number, cell_number, thermal_marks) %>% 
-  mutate(hatchery = ifelse(is.na(thermal_marks), NA, ifelse(thermal_marks == "N", "Natural", "Hatchery"))) %>% 
-  mutate(otolith_0_1_2 = as.numeric(otolith_0_1_2)) %>% 
-  mutate(sampling_event = "Deadpitch") %>% 
-  mutate(location = str_to_lower(location))
+deadpitch.df %>% 
+  ggplot(aes(x = age, y = fork_length_cm, color = factor(year)))+
+  geom_jitter(height = 0, width = 0.25)+
+  scale_color_manual(values = pals::cols25(n = length(unique(deadpitch.df$year))))+
+  facet_wrap(~year)
 
-# Convert dates to a standard format
-df$date <- as.Date(df$date)
 
-df$year <- year(df$date)
 
-deadpitch.df <- bind_rows(deadpitch.df, df)
 
 #post processing and checks####
 #combine ages
