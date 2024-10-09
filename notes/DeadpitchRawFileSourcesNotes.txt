@@ -42,6 +42,12 @@ From: Margot's files
 -------------------------------------
 -----------------------------------
 ---added to NOT INCORP folder -----
+
+
+
+
+--------INCORPORATED ---------------------
+
 (2000)
 2000 sockeye biosampling.xls
 
@@ -92,16 +98,11 @@ From: Margot's files (the file that BJ used)
 From: Margot's files (the file that BJ used)
 
 
-
---------INCORPORATED ---------------------
-
-
-
-
 (2011)------
 Pent Channel Deadpitch 2011.Dec.EJJ.RB.xls
 From: Margot's files
 -the ages look wrong, all .0 -- maybe KO?
+-need check against PADS; note from PT: "there is something going on with the aging data in 2011 (!Deadpitch Data LW 5_Mar_2012.xls). In Deadpitch_Original (2) sheet there are also PBS ages and the notes show that the PBS and european (ONA I assume) are missmatched in parts of the sheet. But it isn't clear which one is missmatched. Based on a brief scan, the european ages correspond better with the lengths. I am going with the Deadpitch_Original sheet for now, which doesn't have the pbs ages. "
 
 !Copy of Deadpitch_11.xls
 From: Margot's files
