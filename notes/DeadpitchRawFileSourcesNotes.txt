@@ -1,3 +1,6 @@
+Deadpitch Raw data file sources and some things to check
+
+
 ---- WAITING FOR ONA-----
 (2022)
 *FWMT Deadpitch Adult.BioData 2022.xlsx
@@ -5,11 +8,6 @@ Still need the finalized and QA/QC'd version from ONA
 
 ------------end of waiting for ONA------------
 
----added to NOT INCORP folder -----
-
-
-
---------INCORPORATED ---------------------
 
 (2000)
 2000 sockeye biosampling.xls
@@ -35,9 +33,15 @@ From: Margot's files (the file that BJ used)
 2005 Biosample Summary.xlsx
 From: Margot's files (the file that BJ used)
 
+KO biosampling_05.xlsx
+from AO's "RyanB origs" folder
+
 (2006)
 !Adults 2006 Summary.xlsx
 From: Margot's files (the file that BJ used)
+
+KO biosampling_06.xlsx
+from AO's "RyanB origs" folder
 
 (2007)
 Skaha_Osys_Dedptch_07.xls
@@ -45,9 +49,15 @@ From: Margot's files (the file that BJ used)
 -broodstock again, also test fishery
 -check thermal marks file?
 
+KO biosampling_07.xlsx
+from AO's "RyanB origs" folder
+
 (2008)
 !Adults 2008 Summary_all_data.xlsx
 From: Margot's files (the file that BJ used)
+
+KO biosampling_08.xlsx
+from AO's "RyanB origs" folder
 
 (2009)
 Deadpitch_Thermal_Marks_2009.xlsx
@@ -57,25 +67,43 @@ From: Margot's files (the file that BJ used)
 !Adults Summary 2010.xls
 From: Margot's files (the file that BJ used)
 
+KO biosampling 2010.xlsx
+from AO's "RyanB origs" folder
+
 (2011)
 !Deadpitch Data LW 5_Mar_2012.xlsx
 From: Margot's files (the file that BJ used)
 
+KO biosampling 2011 Pen Channel.xlsx
+from AO's "RyanB origs" folder
+
 (2012)------
-!2012 Ok Sox Biodata correct ages.xlsx  --tried to delete, but the name is still there
+!2012 Ok Sox Biodata correct ages.xlsx
 From: Margot's files
+
+KO biosampling 2012 pen chan.xlsx
+from AO's "RyanB origs" folder
 
 (2013)------
 !SK Adult BioData Collection Sheet 2013 2Jun14.xlsx
 From: Margot's files
 
+KO biosampling 2013 pen chan.xlsx
+from AO's "RyanB origs" folder
+
 (2014)
 SK Adult.BioData Collection Sheet 2014.xlsx
 From: Chelsea email to Braden 2023.07.02 
 
+KO biosampling 2014 pen chan.xlsx
+from AO's "RyanB origs" folder
+
 (2015)
 SK Adult.BioData Collection Sheet 2015.xlsx
 From: Chelsea email to Braden 2023.07.02 
+
+KO biosampling 2015 pen chan.xlsx
+from AO's "RyanB origs" folder
 
 (2016)
 Deadpitch Adult.BioData 2016_17-6-27.xlsx
@@ -111,13 +139,25 @@ From: Lynnea to me 2/8/2023
 
 (2022)
 FWMT Deadpitch Adult.BioData 2022.xlsx
-from Chelsea Oct9-2024, but does not have the ages
+from Chelsea Oct9-2024, but does not have the ages; waiting for final version from Lynnea because I also have a not-QA/QC version with ages.
+
+Nerkid (Skaha) Deadpitch Adult.BioData_22.xlsx
+
+Okanagan Deadpitch Adult.BioData_22_OKLakeTribs.xlsx
+from ONA email to AO (me find)
 
 (2023)
 FWMT Deadpitch Adult.BioData_23.xlsx
 from Chelsea Oct9-2024
 
+Nerkid (Skaha) Deadpitch Adult.BioData_23.xlsx
 
+Okanagan Deadpitch Adult.BioData_23.xlsx
+from ONA email to AO (me find)
+
+
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
 #--------- these are files that AO may check against the ones above
 
 THESE ARE THE ONES I ORIGINALLY CHOSE TO UPLOAD (where they differ from BJ's)
@@ -149,7 +189,7 @@ From: Margot's files
 From: Margot's files
 -thermal marks may be in a different file?
 
-(2011)------
+(2011)
 Pent Channel Deadpitch 2011.Dec.EJJ.RB.xls
 From: Margot's files
 -the ages look wrong, all .0 -- maybe KO?
