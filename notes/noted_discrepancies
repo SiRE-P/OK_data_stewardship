@@ -7,3 +7,4 @@
 - "./data/deadpitch/SK Adult.BioData Collection Sheet 2014.xlsx" has okr_section and location flipped
 - "../../SIRE_data/deadpitch/!SK Adult BioData Collection Sheet 2013 2Jun14.xlsx" has NS and NR. I think these are not sampled and not recorded. - switching to NA
 - in 2011 there is a Deadpitch_Original (2) sheet that also has PBS ages, but these seem to be out of order in some cases - going with the ages in Deadpitch_Original
+- in 2007, all of the fish id'd as kokanee based on otoliths were too large to be kokanee, and this was the case regardless of whether they were labelled as mixed up or not in the spreadsheet. I am opting to remove the age data from this year since this makes it suspect.

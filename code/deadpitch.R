@@ -365,6 +365,22 @@ read_and_clean <- function(file) {
     df$dna_results <- as.character(df$dna_results)
   }
   
+  if("reach" %in% names(df)){
+    df$reach <- as.character(df$reach)
+  }
+  
+  if("total_age" %in% names(df)){
+    df$total_age <- as.numeric(df$total_age)
+  }
+  
+  if("european_age" %in% names(df)){
+    df$european_age <- as.character(df$european_age)
+  }
+  
+  if("dna_grid_number" %in% names(df)){
+    df$dna_grid_number <- as.character(df$dna_grid_number)
+  }
+  
   return(df)
 }
 
@@ -384,6 +400,7 @@ tabyl(df_2013_onward, sampling_event, year)
 
 
 deadpitch_hold <- dp_2000_2012 %>% 
+  mutate(age_ona_lab = as.character(age_ona_lab)) %>% 
   select(date, okr_section, location, ona_number, sex, dfo_age = age, ona_age = age_ona_lab, age_comment, age_sample_quality = sample_quality, fork_length_cm, poh_length_cm, weight_g, thermal_marks, species, spawned = spawned_y_n, comments) %>% 
   bind_rows(
     df_2013_onward %>% 
@@ -419,7 +436,8 @@ deadpitch.df <- deadpitch_hold %>%
     location = str_replace_all(location, "ok falls - vds 17$|okanagan provincial park - vds 17", "ok falls prov park - vds 17"),
     location = str_replace_all(location, "^hwy - enhanced$", "hwy bridge - enhanced section")
   ) %>% 
-  mutate(age = ifelse(!is.na(dfo_age), dfo_age, ona_age)) %>% 
+  mutate(ona_age = as.character(as.numeric(ona_age))) %>% 
+  mutate(age = as.numeric(ifelse(!is.na(dfo_age), dfo_age, ona_age))) %>% 
   mutate(age_agrees = ifelse(dfo_age == ona_age, "Y", "N")) %>%  #make column to indicate if the dfo and ona_ages agree
   mutate(age_agrees = ifelse(is.na(age_agrees), "one est.", age_agrees)) %>% 
   mutate(age_source = ifelse(!is.na(dfo_age), "DFO", ifelse(!is.na(ona_age), "ONA", NA))) %>% 
@@ -465,6 +483,15 @@ middle_ok_river2 <- c("ok falls prov park - vds 17",
                       "vds 16 - vds 15",
                       "vds 15 - vds 14")
 
+okanagan_section <- c("equesis creek", 
+                      "mission creek", 
+                      "nashwito creek", 
+                      "peachland creek",
+                      "penticton creek",
+                      "powers creek",
+                      "trepanier creek",
+                      "trout creek")
+
 deadpitch.df <- deadpitch.df %>% 
   mutate(section = case_when(okr_section %in% lower_ok_river ~ "lower_ok_river",
                              okr_section %in% middle_ok_river ~ "middle_ok_river",
@@ -473,6 +500,7 @@ deadpitch.df <- deadpitch.df %>%
                              TRUE ~ NA_character_)) %>% 
   mutate(section = case_when(is.na(section) & location %in% lower_ok_river2 ~ "lower_ok_river",
                              is.na(section) & location %in% middle_ok_river2 ~ "middle_ok_river",
+                             is.na(section) & location %in% okanagan_section ~ "ok_lake_creeks",
                              TRUE ~ section)) 
 
 
@@ -498,7 +526,7 @@ tabyl(deadpitch.df, hatchery, year)
 tabyl(deadpitch.df, location, year)
 tabyl(deadpitch.df, section, year)
 tabyl(deadpitch.df, okr_section, section)
-tabyl(deadpitch.df, location, section) %>% arrange(desc(lower_ok_river), desc(middle_ok_river), desc(shingle_creek), desc(upper_ok_river))
+tabyl(deadpitch.df, location, section) %>% arrange(desc(lower_ok_river), desc(middle_ok_river), desc(shingle_creek), desc(upper_ok_river), desc(ok_lake_creeks))
 tabyl(deadpitch.df, spawned, year)
 
 #checks on dataframe
