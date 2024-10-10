@@ -1,60 +1,19 @@
 ---- WAITING FOR ONA-----
 (2022)
 *FWMT Deadpitch Adult.BioData 2022.xlsx
-WE DON'T HAVE THE FINAL QA/QC VERSION OF THIS; I HAVE ASKED FOR IT (Oct3,2024)
+Still need the finalized and QA/QC'd version from ONA
 
-(2023)
-*2023 Osoyoos deadpitch (Pen Chan still hadn't been read back in Mar when I got a version of this)
 ------------end of waiting for ONA------------
 
-THESE ARE THE ONES I ORIGINALLY CHOSE TO UPLOAD (where they differ from BJ's)
-
-
-(2005)
-2005 sk-age.xls
-From: Margot's files
-***not sure if "2005 ONA broodstock data.xls" is relevant; there's some deadpitch data in that file, too
-
-(2006)
-2006 Adult Sx Biosampling.xls
-From: Margot's files
-
-(2008)
-!Deadpitch_08_MASTER.xls
-From: Margot's files
--there seems to be an original file in there too, "Deadpitch_08.xls"
-
-
-(2009)
-Deadpitch Master 2009.xls
-Age_Size_Distribution (2009).xls
-From: Margot's files
-(I added the 2009in parentheses)
--compare to some of the other files?
-
-(2010)
-!Deadpitch Master 2010.xls
-From: Margot's files
--thermal marks may be in a different file?
-
-
-
--------------------------------------
------------------------------------
 ---added to NOT INCORP folder -----
 
-(2022)
-FWMT Deadpitch Adult.BioData 2022.xlsx
-from Chelsea Oct9-2024, but MAY NOT BE the final version
 
-(2023)
-FWMT Deadpitch Adult.BioData_23.xlsx
-from Chelsea Oct9-2024
 
 --------INCORPORATED ---------------------
 
 (2000)
 2000 sockeye biosampling.xls
+From: Margot's files (the file that BJ used)
 
 (2001)
 2001 Sox Biosamples.xlsx
@@ -98,36 +57,13 @@ From: Margot's files (the file that BJ used)
 !Adults Summary 2010.xls
 From: Margot's files (the file that BJ used)
 
-(2011)   --  add to the others? --
+(2011)
 !Deadpitch Data LW 5_Mar_2012.xlsx
 From: Margot's files (the file that BJ used)
-
-
-(2011)------
-Pent Channel Deadpitch 2011.Dec.EJJ.RB.xls
-From: Margot's files
--the ages look wrong, all .0 -- maybe KO?
--need check against PADS; note from PT: "there is something going on with the aging data in 2011 (!Deadpitch Data LW 5_Mar_2012.xls). In Deadpitch_Original (2) sheet there are also PBS ages and the notes show that the PBS and european (ONA I assume) are missmatched in parts of the sheet. But it isn't clear which one is missmatched. Based on a brief scan, the european ages correspond better with the lengths. I am going with the Deadpitch_Original sheet for now, which doesn't have the pbs ages. "
-
-!Copy of Deadpitch_11.xls
-From: Margot's files
--needs cross-checking of files
--check these input files against the one that BJ used
-
-!Ages Adult Sockeye 2011.xls
-From: Margot's files
--check these input files against the one that BJ used
-
-
-
--PT noted that in 2011, the lengths don't specify POH or FL; BJ assumed FL; maybe PT used distributions to show that they were actually FLs 
-
-
 
 (2012)------
 !2012 Ok Sox Biodata correct ages.xlsx  --tried to delete, but the name is still there
 From: Margot's files
-
 
 (2013)------
 !SK Adult BioData Collection Sheet 2013 2Jun14.xlsx
@@ -160,10 +96,10 @@ From: Chelsea email to Braden 2023.07.02
 
 (2019-2021)
 Penticton Channel deadpitch 2019-2021.xlsx
--needs comparison to other 2019-2021 files (looks like overlap with "Deadpitch Adult.BioData 12-2-19.xlsx" and each other)
+-needs comparison to other 2019-2021 files (looks like overlap with "Deadpitch Adult.BioData 12-2-19.xlsx" and "Shingle deadpitch 2019-2021 (002).xlsx")
 
 Shingle deadpitch 2019-2021 (002).xlsx
--needs comparison to other 2019-2021 files (looks like overlap with "Deadpitch Adult.BioData 12-2-19.xlsx" and each other)
+-needs comparison to other 2019-2021 files (looks like overlap with "Deadpitch Adult.BioData 12-2-19.xlsx" and "Penticton Channel deadpitch 2019-2021.xlsx")
 
 (2020)
 FWMT Deadpitch Adult.BioData 2020.xlsx
@@ -172,6 +108,64 @@ From: Chelsea email to Braden 2023.07.02
 (2021)
 FWMT Deadpitch Adult.BioData 2021.xlsx
 From: Lynnea to me 2/8/2023
+
+(2022)
+FWMT Deadpitch Adult.BioData 2022.xlsx
+from Chelsea Oct9-2024, but does not have the ages
+
+(2023)
+FWMT Deadpitch Adult.BioData_23.xlsx
+from Chelsea Oct9-2024
+
+
+#--------- these are files that AO may check against the ones above
+
+THESE ARE THE ONES I ORIGINALLY CHOSE TO UPLOAD (where they differ from BJ's)
+(these are for AO to check against the inputted data)
+
+(2005)
+2005 sk-age.xls
+From: Margot's files
+***not sure if "2005 ONA broodstock data.xls" is relevant; there's some deadpitch data in that file, too
+
+(2006)
+2006 Adult Sx Biosampling.xls
+From: Margot's files
+
+(2008)
+!Deadpitch_08_MASTER.xls
+From: Margot's files
+-there seems to be an original file in there too, "Deadpitch_08.xls"
+
+(2009)
+Deadpitch Master 2009.xls
+Age_Size_Distribution (2009).xls
+From: Margot's files
+(I added the 2009in parentheses)
+-compare to some of the other files?
+
+(2010)
+!Deadpitch Master 2010.xls
+From: Margot's files
+-thermal marks may be in a different file?
+
+(2011)------
+Pent Channel Deadpitch 2011.Dec.EJJ.RB.xls
+From: Margot's files
+-the ages look wrong, all .0 -- maybe KO?
+-need check against PADS; note from PT: "there is something going on with the aging data in 2011 (!Deadpitch Data LW 5_Mar_2012.xls). In Deadpitch_Original (2) sheet there are also PBS ages and the notes show that the PBS and european (ONA I assume) are missmatched in parts of the sheet. But it isn't clear which one is missmatched. Based on a brief scan, the european ages correspond better with the lengths. I am going with the Deadpitch_Original sheet for now, which doesn't have the pbs ages. "
+
+!Copy of Deadpitch_11.xls
+From: Margot's files
+-needs cross-checking of files
+-check these input files against the one that BJ used
+
+!Ages Adult Sockeye 2011.xls
+From: Margot's files
+-check these input files against the one that BJ used
+
+-PT noted that in 2011, the lengths don't specify POH or FL; BJ assumed FL; maybe PT used distributions to show that they were actually FLs 
+
 
 
 
