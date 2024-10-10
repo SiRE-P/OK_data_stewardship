@@ -2,6 +2,7 @@ library(tidyverse)
 library(janitor)
 library(readxl)
 
+
 #custom functions###
 convert_to_decimal <- function(x) {
   if (!is.na(x) && nchar(x) == 2 && str_detect(x, "^[0-9]+$")) {
@@ -11,6 +12,8 @@ convert_to_decimal <- function(x) {
   }
 }
 
+is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
+
 #2000####
 dp_2000 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2000 sockeye biosampling.xls", sheet = "Sheet1") %>% 
   clean_names() %>% 
@@ -18,8 +21,13 @@ dp_2000 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2000 sockeye biosampl
   mutate(sex = case_when(female == 1 ~ "f", male == 1 ~ "m", TRUE ~ NA)) %>% 
   mutate(date = convert_to_date(date)) %>%
   mutate(weight_g = weight_kg * 1000) %>% 
-  mutate(age = as.character("age")) %>% 
-  select(date, sex, age, fork_length_cm, weight_g, location = sampling_location, comments, source)
+  mutate(age = as.character(age)) %>% 
+  select(date, sex, age, fork_length_cm, weight_g, location = sampling_location, comments, source)%>% 
+  filter(!is.na(date))
+
+tail(dp_2000)
+tabyl(dp_2000, age)
+
 compare_df_cols(dp_2000)
 
 #2001####
@@ -30,7 +38,10 @@ dp_2001 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2001 Sox Biosamples.x
   mutate(fork_length_cm = nose_fork_length_mm /10) %>% 
   mutate(poh_length_cm = poh_mm / 10) %>% 
   mutate(age = as.character(as.numeric(age))) %>% 
-  select(date, fish_number, dfo_number, sex = sex_m_f, age, fork_length_cm, poh_length_cm, weight_g, location, fecundity_count_eggs, scales_taken_y_n = scales_y_n, head_taken_y_n = head_y_n, clips_or_hole_punch, crew)
+  select(date, fish_number, dfo_number, sex = sex_m_f, age, fork_length_cm, poh_length_cm, weight_g, location, fecundity_count_eggs, scales_taken_y_n = scales_y_n, head_taken_y_n = head_y_n, clips_or_hole_punch, crew)%>% 
+  filter(!is.na(date))
+
+tail(dp_2001)
 compare_df_cols(dp_2000, dp_2001)
 
 #2002####
@@ -43,7 +54,11 @@ dp_2002 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2002 Sox Biosample MS
   mutate(poh_length_cm = poh_mm / 10) %>%
   mutate(age = as.character(age)) %>% 
   mutate(weight_g = as.numeric(weight_g)) %>% 
-  select(date, fish_number, other_reference_number, sex, age, fork_length_cm, poh_length_cm, weight_g, location, fecundity_count_eggs = fecundity_egg_retention, scales_taken_y_n, head_taken_y_n, dna_punch_y_n, comments)
+  select(date, fish_number, other_reference_number, sex, age, fork_length_cm, poh_length_cm, weight_g, location, fecundity_count_eggs = fecundity_egg_retention, scales_taken_y_n, head_taken_y_n, dna_punch_y_n, comments)%>% 
+  filter(!is.na(date))
+
+tail(dp_2002)
+
 compare_df_cols(dp_2000, dp_2001, dp_2002)
 
 #2003####
@@ -54,7 +69,11 @@ dp_2003 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2003 all data.xls", s
   mutate(date = convert_to_date(date)) %>%
   mutate(age = as.character(age)) %>% 
   mutate(weight_g = as.numeric(weight)) %>% 
-  select(date, sex, age, fork_length_cm, weight_g, location = sampling_location, source, comments = age_comment)
+  select(date, sex, age, fork_length_cm, weight_g, location = sampling_location, source, comments = age_comment)%>% 
+  filter(!is.na(date))
+
+tail(dp_2003)
+
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003)
 
 #2004####
@@ -73,11 +92,14 @@ ages_2004 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2004 Biosampling.xl
   clean_names()
 
 dp_2004 <- left_join(dp_2004, ages_2004 %>% 
-            select(ona_number, x3) %>% 
-            mutate(age = as.character(as.numeric(x3)/10))) %>%  #PT - confirmed that this does this correctly. But it does drop the 1Fs
-            select(-x3) %>% 
-  mutate(ona_number = as.numeric(ona_number))
-  
+                       select(ona_number, x3) %>% 
+                       mutate(age = as.character(as.numeric(x3)/10))) %>%  #PT - confirmed that this does this correctly. But it does drop the 1Fs
+  select(-x3) %>% 
+  mutate(ona_number = as.numeric(ona_number))%>% 
+  filter(!is.na(date))
+
+tail(dp_2004)
+
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004)
 
 #2005####
@@ -86,8 +108,11 @@ dp_2005 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2005 Biosample Summar
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>%
   mutate(age = as.character(age)) %>% 
-  select(date, sample_number, location, species, sex, fork_length_cm = length_cm, weight_g, age, source = data_source)
-  
+  select(date, sample_number, location, species, sex, fork_length_cm = length_cm, weight_g, age, source = data_source)%>% 
+  filter(!is.na(date))
+
+tail(dp_2005)
+
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005)
 
 #2006####
@@ -98,7 +123,10 @@ dp_2006 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Adults 2006 Summary.
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>%
-  select(date, location = reach, sex, fork_length_cm = length_cm, comments)
+  select(date, location = reach, sex, fork_length_cm = length_cm, comments)%>% 
+  filter(!is.na(date))
+
+tail(dp_2006)
 
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006)
 
@@ -113,18 +141,31 @@ dp_2007 <- read_excel("../../SIRE_data/deadpitch/2000-2012/Skaha_Osys_Dedptch_07
     age_to_sea = as.numeric(substr(gilbert_rich_age , nchar(gilbert_rich_age ), nchar(gilbert_rich_age ))),
     age = ifelse(is.na(gilbert_rich_age), NA, paste0(age_to_sea - 1, ".", total_age - age_to_sea))) %>% 
   mutate(possibly_mixed_up = ifelse(ona_number > 14769 & ona_number < 14870, TRUE, FALSE)) %>% 
-  select(date, ona_number, species, fork_length_cm = length_cm, thermal_marks, age, sex = sex_m_f, location = comments, possibly_mixed_up)
+  select(date, ona_number, species, fork_length_cm = length_cm, thermal_marks, age, sex = sex_m_f, location = comments, possibly_mixed_up)%>% 
+  filter(!is.na(date))
+
+tail(dp_2007)
+
+#the sheet says that some fish were possibly mixed up in the sample trays. 
 
 dp_2007 %>% 
   group_by(age) %>% 
-  mutate(n = n()) %>% filter(n > 1) %>% 
+  mutate(n = n()) %>% 
   ggplot(aes(y = fork_length_cm, x = possibly_mixed_up, group = possibly_mixed_up, color = possibly_mixed_up))+
-  geom_violin()+
+  geom_jitter(height = 0)+
   facet_wrap(~age)
 
-#the sheet says that some fish were possibly mixed up in the sample trays. Based on length-age relationship, I don't think this occurred
+tabyl(dp_2007$age)
 
-dp_2007$possibly_mixed_up <- NULL
+dp_2007 %>% 
+  mutate(species_from_oto = case_when(is.wholenumber(as.numeric(age)) ~ "kokanee",
+                                      !is.wholenumber(as.numeric(age)) ~ "sockeye",
+                                      is.na(age) ~ NA_character_))%>% 
+  ggplot(aes(color = possibly_mixed_up, y = fork_length_cm, x = species_from_oto)) +
+  geom_jitter()
+# in 2007, all of the fish id'd as kokanee based on otoliths were too large to be kokanee, and this was the case regardless of whether they were labelled as mixed up or not in the spreadsheet. 
+# opting to remove the age data from this year since this makes it suspect
+dp_2007$age <- NA
 
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007)
 
@@ -134,7 +175,10 @@ dp_2008 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Adults 2008 Summary_
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>% 
   mutate(age = as.character(age)) %>% 
-  select(date, location, ona_number, species, sex, fork_length_cm = length_cm, age, thermal_marks, comments)
+  select(date, location, ona_number, species, sex, fork_length_cm = length_cm, age, thermal_marks, comments) %>% 
+  filter(!is.na(date))
+
+tail(dp_2008)
 
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008)
 
@@ -144,8 +188,10 @@ dp_2009 <- read_excel("../../SIRE_data/deadpitch/2000-2012/Deadpitch_Thermal_Mar
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>% 
   mutate(age = as.character(age)) %>% 
-  select(date, location, ona_number, age, sex = sex_m_f, fork_length_cm = length_cm, spawned_y_n, thermal_marks, comments) %>% 
+  select(date, location, ona_number, age, sex = sex_m_f, fork_length_cm = length_cm, spawned_y_n, thermal_marks, comments)%>% 
   filter(!is.na(date))
+
+tail(dp_2009)
 
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009)
 
@@ -189,7 +235,7 @@ dp_2012 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!2012 Ok Sox Biodata 
   select(date, location, sex = sex_m_f, fork_length_cm, poh_length_cm, spawned_y_n = spawned_y_n_partial, dna_y_n, comments, vial_number = otolith_vial_number) %>% 
   filter(!is.na(date)) %>% 
   filter(!is.na(location))
-  
+
 ages_2012 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!2012 Ok Sox Biodata correct ages.xlsx", sheet = "Aged Otos with Biodata") %>% 
   clean_names() %>% 
   select(vial_number, age = age_pbs_lab, age_ona_lab, thermal_marks) %>% 
@@ -228,6 +274,7 @@ read_and_clean <- function(file) {
       df_list <- read_excel(file, sheet = raw_data_sheet, na = c("n/a", "-", "ns", "NS", "NR"), guess_max = 1e5, skip = 1) %>% 
         clean_names()
       names(df_list) <- names(df_list_hold)
+      
     } else{
       if(file == "../../SIRE_data/deadpitch/modern_era/SK Adult.BioData Collection Sheet 2015.xlsx"){ #because 2015 has 2 raw data sheets and the first one does not have any aging data
         
@@ -336,26 +383,26 @@ compare_df_cols(df_2013_onward, dp_2000_2012)
 tabyl(df_2013_onward, sampling_event, year)
 
 
-deadpitch.df <- dp_2000_2012 %>% 
+deadpitch_hold <- dp_2000_2012 %>% 
   select(date, okr_section, location, ona_number, sex, dfo_age = age, ona_age = age_ona_lab, age_comment, age_sample_quality = sample_quality, fork_length_cm, poh_length_cm, weight_g, thermal_marks, species, spawned = spawned_y_n, comments) %>% 
   bind_rows(
     df_2013_onward %>% 
-  filter(sampling_event == "Deadpitch") %>% #remove broodstock data because it is not random and selects for larger individuals
-  select(date, okr_section, location, ona_number, sex, ona_age = european_age, dfo_age = dfo_age_from_otoliths, age_comment = aging_comments, age_sample_quality, fork_length_cm, poh_length_cm, weight_g, hatchery,  spawned, comments)
-  )
-
+      filter(sampling_event == "Deadpitch") %>% #remove broodstock data because it is not random and selects for larger individuals
+      select(date, okr_section, location, ona_number, sex, ona_age = european_age, dfo_age = dfo_age_from_otoliths, age_comment = aging_comments, age_sample_quality, fork_length_cm, poh_length_cm, weight_g, hatchery,  spawned, comments)
+  ) %>% 
+  mutate(year = year(date))
+  
 
 #clean up combined data###
-deadpitch.df <- deadpitch.df %>% 
-  mutate(year = year(date)) %>% 
+deadpitch.df <- deadpitch_hold %>% 
   mutate(okr_section = str_to_lower(okr_section),
-       location = str_to_lower(location),
-       sex = str_to_lower(sex),
-       ona_age = as.character(ona_age)) %>% 
+         location = str_to_lower(location),
+         sex = str_to_lower(sex),
+         ona_age = as.character(ona_age)) %>% 
   mutate(hatchery_hold = case_when(thermal_marks %in% c("N", "N,N", "N,N,N") ~ "natural",
-                              thermal_marks %in% c("lost", "UNK") ~ "unknown",
-                              is.na(thermal_marks) ~ "unknown",
-                              TRUE ~ "hatchery")) %>% 
+                                   thermal_marks %in% c("lost", "UNK") ~ "unknown",
+                                   is.na(thermal_marks) ~ "unknown",
+                                   TRUE ~ "hatchery")) %>% 
   mutate(hatchery = ifelse(!is.na(hatchery), str_to_lower(hatchery), hatchery_hold)) %>% 
   select(-hatchery_hold) %>% 
   mutate(
@@ -364,81 +411,70 @@ deadpitch.df <- deadpitch.df %>%
     location = str_trim(location),  # Remove extra spaces
     location = str_replace_all(location, " to ", " - "), # standardize separators
     location = str_remove(location, ";.*"), #remove pit tag entries in location
-    location = str_replace_all(location, " 97", ""),  # Remove "97 from hwy"
     location = str_replace_all(location, "\\.", ""),  # Remove periods
     location = str_replace_all(location, "broodstock$", "broodstock site"),  # Add "site" to "broodstock" when it's missing
     location = str_replace_all(location, "^enhanced - golf$", "enhanced section - golf bridge"),
     location = str_replace_all(location, "^(golf - kvr|golf bridge - kvr|golf bridge - kvr pilings)$", "golf bridge - kvr bridge"),
-    location = str_replace_all(location, "^(golf - kvr|golf bridge - kvr|golf bridge - kvr pilings)$", "golf bridge - kvr bridge"),
+    location = str_replace_all(location, "^(vds 15 - vds 15|vds 15 - vds 16|vds 15 - vds 17|vds 15 - vds 18|vds 15 - vds 19|vds 15 - vds 20)$", "vds 15 - vds 14"),
     location = str_replace_all(location, "ok falls - vds 17$|okanagan provincial park - vds 17", "ok falls prov park - vds 17"),
     location = str_replace_all(location, "^hwy - enhanced$", "hwy bridge - enhanced section")
   ) %>% 
   mutate(age = ifelse(!is.na(dfo_age), dfo_age, ona_age)) %>% 
   mutate(age_agrees = ifelse(dfo_age == ona_age, "Y", "N")) %>%  #make column to indicate if the dfo and ona_ages agree
   mutate(age_agrees = ifelse(is.na(age_agrees), "one est.", age_agrees)) %>% 
-  mutate(age_source = ifelse(!is.na(dfo_age), "DFO", ifelse(!is.na(ona_age), "ONA", NA)))
+  mutate(age_source = ifelse(!is.na(dfo_age), "DFO", ifelse(!is.na(ona_age), "ONA", NA))) %>% 
+  filter(fork_length_cm < 70 | is.na(fork_length_cm)) %>%  # remove fish that are larger than largest ever recorded Sockeye - likely Chinook
+  mutate(poh_length_cm = ifelse(poh_length_cm < 5 & fork_length_cm > 30, NA, poh_length_cm)) %>%  # remove impossibly small poh on fish that have fork_length > 30 cm
+  mutate(age = ifelse(age==0, NA, age)) %>% 
+  mutate(species_from_oto = case_when(is.wholenumber(as.numeric(age)) ~ "kokanee",
+                                      !is.wholenumber(as.numeric(age)) ~ "sockeye",
+                                      is.na(age) ~ NA_character_)) %>% 
+  mutate(location = ifelse(year == 2013, NA, location)) %>%  #removing location in 2013 because they are just labelled as okanagan river but this includes both lower and middle river - okr section (and reach) distinguish these
+  mutate(okr_section = ifelse(!is.na(location) & location == "ok falls prov park - vds 17", "above mcintyre", okr_section))
 
-tabyl(deadpitch.df, year)
-tabyl(deadpitch.df, dfo_age, year)
-tabyl(deadpitch.df, ona_age, year)
-tabyl(deadpitch.df, dfo_age)
-tabyl(deadpitch.df, ona_age)
-tabyl(deadpitch.df, thermal_marks)
-tabyl(deadpitch.df, hatchery, year)
-tabyl(deadpitch.df, location, year)
-tabyl(deadpitch.df, age, year)
-tabyl(deadpitch.df, age_agrees, year)
-tabyl(deadpitch.df, age_source, year)
+lower_ok_river <- c("index", "north", "south", "oliver")
+middle_ok_river <- c("above mcintyre")
+upper_ok_river <- c("penticton channel", "skaha lake")
+shingle_creek <- c("shingle creek")
 
-deadpitch.df %>% 
-  filter(poh_length_cm > 10) %>% 
-  ggplot(aes(x = poh_length_cm, y = fork_length_cm))+
-  geom_point()+
-  geom_smooth(method = 'lm')
+lower_ok_river2 <- c("boat launch - broodstock site", 
+                     "boat launch - egg take", 
+                     "boat launch - island rd", 
+                     "deer park - hwy bridge", 
+                     "hwy 97 bridge - boat launch", 
+                     "hwy 97 bridge crossing - boat launch",
+                     "hwy bridge - beach seine # 1", 
+                     "hwy bridge - boat launch", 
+                     "hwy bridge - broodstock site", 
+                     "hwy bridge - egg take",
+                     "hwy bridge - vds13",
+                     "island rd - broodstock site",
+                     "mcintyre dam",
+                     "okanagan",
+                     "okanagan river",
+                     "okanagan river spawning grounds",
+                     "osoyoos",
+                     "osoyoos lake",
+                     "spawning grounds",
+                     "transect 2 - hwy 97 bridge",
+                     "transect 2 - hwy 97 bridge crossing",
+                     "transect 2 - hwy bridge"
+                     )
+middle_ok_river2 <- c("ok falls prov park - vds 17",
+                      "vds 17 - vds 16", 
+                      "vds 16 - vds 15",
+                      "vds 15 - vds 14")
 
-length_model <- lm(fork_length_cm ~ poh_length_cm, deadpitch.df %>% filter(poh_length_cm>10))
-summary(length_model)
+deadpitch.df <- deadpitch.df %>% 
+  mutate(section = case_when(okr_section %in% lower_ok_river ~ "lower_ok_river",
+                             okr_section %in% middle_ok_river ~ "middle_ok_river",
+                             okr_section %in% upper_ok_river ~ "upper_ok_river",
+                             okr_section %in% shingle_creek ~ "shingle creek",
+                             TRUE ~ NA_character_)) %>% 
+  mutate(section = case_when(is.na(section) & location %in% lower_ok_river2 ~ "lower_ok_river",
+                             is.na(section) & location %in% middle_ok_river2 ~ "middle_ok_river",
+                             TRUE ~ section)) 
 
-
-
-deadpitch.df %>% 
-  ggplot(aes(x = age, y = fork_length_cm, color = age_source, shape = age_agrees))+
-  geom_jitter(height = 0, width = 0.25)+
-  facet_wrap(~year)+
-  scale_shape_manual(values = c(1, 16, 15))
-
-deadpitch.df %>% 
-  ggplot(aes(x = ona_age, y = fork_length_cm, color = factor(year)))+
-  geom_jitter(height = 0, width = 0.25)+
-  scale_color_manual(values = pals::cols25(n = length(unique(deadpitch.df$year))))+
-  facet_wrap(~year)
-
-deadpitch.df %>% 
-  ggplot(aes(x = age, y = fork_length_cm, color = factor(year)))+
-  geom_jitter(height = 0, width = 0.25)+
-  scale_color_manual(values = pals::cols25(n = length(unique(deadpitch.df$year))))+
-  facet_wrap(~year)
-
-
-
-
-#post processing and checks####
-#combine ages
-deadpitch.df$dfo_age_processed <- deadpitch.df$dfo_age_from_otoliths
-table
-  
-deadpitch.df$ona_age <- deadpitch.df$european_age
-deadpitch.df$european_age <- ifelse() 
-
-#clean up location and okr_section names
-deadpitch.df$okr_section <- str_to_lower(deadpitch.df$okr_section)
-deadpitch.df$location <- str_to_lower(deadpitch.df$location)
-
-deadpitch.df %>% 
-  group_by(okr_section, location) %>% 
-  summarise(n = n()) %>% 
-  arrange(okr_section) %>% 
-  print(n = 100)
 
 #clean up spawned
 table(deadpitch.df$spawned)
@@ -447,20 +483,27 @@ deadpitch.df$spawned[deadpitch.df$spawned == "n"] <- "no"
 deadpitch.df$spawned[deadpitch.df$spawned == "y" | deadpitch.df$spawned == "s" | deadpitch.df$spawned == "yy"] <- "yes"
 deadpitch.df$spawned[deadpitch.df$spawned == "p" | deadpitch.df$spawned == "ps"] <- "partial"
 table(deadpitch.df$spawned)
+         
 
+#post processing and checks####
+tabyl(deadpitch.df, year)
+tabyl(deadpitch.df, species_from_oto)
+tabyl(deadpitch.df, species)
+tabyl(deadpitch.df, age, year)
+tabyl(deadpitch.df, age_source, year)
+tabyl(deadpitch.df, dfo_age, year)
+tabyl(deadpitch.df, ona_age, year)
+tabyl(deadpitch.df, thermal_marks)
+tabyl(deadpitch.df, hatchery, year)
+tabyl(deadpitch.df, location, year)
+tabyl(deadpitch.df, section, year)
+tabyl(deadpitch.df, okr_section, section)
+tabyl(deadpitch.df, location, section) %>% arrange(desc(lower_ok_river), desc(middle_ok_river), desc(shingle_creek), desc(upper_ok_river))
+tabyl(deadpitch.df, spawned, year)
 
 #checks on dataframe
 summary(deadpitch.df)
 str(deadpitch.df)
-
-table(deadpitch.df$sex, useNA = "always")
-table(deadpitch.df$hatchery, useNA = "always")
-table(deadpitch.df$age_sample_quality, useNA = "always")
-table(deadpitch.df$tagged_y_n, useNA = "always")
-table(deadpitch.df$european_age, useNA = "always")
-table(deadpitch.df$dfo_age_from_otoliths, useNA = "always")
-
-table(deadpitch.df$sex, useNA = "always")
 
 #check for multiples of ona_number
 deadpitch.df %>%
@@ -469,60 +512,86 @@ deadpitch.df %>%
   mutate(n = n()) %>% 
   filter(n > 1)
 
-ggplot(deadpitch.df %>% group_by(year, european_age) %>% summarise(n = n()), aes(x = factor(european_age), y = n, group = european_age))+
+deadpitch.df %>% 
+  ggplot(aes(x = poh_length_cm, y = fork_length_cm))+
   geom_point()+
-  facet_wrap(~year)+
-  scale_y_log10()
+  geom_smooth(method = 'lm')
 
-ggplot(deadpitch.df %>% group_by(year, hatchery) %>% summarise(n = n()), aes(x = hatchery, y = n, group = hatchery))+
-  geom_point()+
-  facet_wrap(~year)+
-  scale_y_log10()
+length_model <- lm(fork_length_cm ~ poh_length_cm, deadpitch.df)
+summary(length_model)
 
-ggplot(deadpitch.df %>% group_by(year, hatchery) %>% summarise(n = n()), aes(x = hatchery, y = n, group = hatchery))+
-  geom_point()+
-  facet_wrap(~year)+
-  scale_y_log10()
+deadpitch.df <- deadpitch.df %>% 
+  mutate(fork_length_cm_predicted = predict(length_model, newdata = .)) %>% 
+  mutate(fork_length_cm_measured = fork_length_cm) %>% 
+  mutate(fork_length_cm_predicted = ifelse(!is.na(fork_length_cm_measured), fork_length_cm_measured, fork_length_cm_predicted)) %>% 
+  mutate(fork_length_imputed = ifelse(is.na(fork_length_cm_measured), TRUE, FALSE)) %>% 
+  select(-fork_length_cm)
 
-ggplot(deadpitch.df %>% group_by(year, spawned) %>% summarise(n = n()), aes(x = spawned, y = n, group = spawned))+
-  geom_point()+
-  facet_wrap(~year)+
-  scale_y_log10()
+summary(deadpitch.df$fork_length_cm_predicted)
+ggplot(deadpitch.df, aes(x = fork_length_cm_predicted, color = species_from_oto))+
+  geom_density()+
+  theme_bw()
 
-ggplot(deadpitch.df %>% group_by(year, age_sample_quality) %>% summarise(n = n()), aes(x = age_sample_quality, y = n, group = age_sample_quality))+
-  geom_point()+
+ggplot(deadpitch.df, aes(x = species_from_oto, y = fork_length_cm_predicted, group = species_from_oto, color = species_from_oto, shape = age_agrees))+
+  geom_jitter(height = 0, width = 0.1)+
+  geom_violin(fill = NA, color = 1)+
+  theme_bw()+
   facet_wrap(~year)
 
-ggplot(deadpitch.df, aes(x = year, y = fork_length_cm, group = year))+
-  geom_boxplot()+
-  facet_grid(sampling_event~okr_section)
-
-deadpitch.df %>%
-  filter(!is.na(poh_length_cm)) %>% 
-  group_by(year) %>% 
-  summarise(n())
-
-ggplot(deadpitch.df, aes(x = date, y = poh_length_cm))+
-  geom_point()+
-  facet_grid(sampling_event~okr_section)
-
-deadpitch.df[sample(nrow(deadpitch.df)),] %>% ggplot(aes(x = poh_length_cm, y = fork_length_cm, color = factor(year)))+geom_point()+
-  facet_grid(sampling_event~okr_section)
-
-deadpitch.df %>%
-  mutate(poh_is_present = !is.na(poh_length_cm),
-         forklength_is_present = !is.na(fork_length_cm)) %>%
-  group_by(poh_is_present, forklength_is_present) %>%
-  summarise(count = n())
-
-
+deadpitch.df %>% 
+  ggplot(aes(x = age, y = fork_length_cm_predicted, color = age_source, shape = age_agrees))+
+  geom_jitter(height = 0, width = 0.25)+
+  facet_wrap(~year)+
+  scale_shape_manual(values = c(1, 16, 15))
 
 deadpitch.df %>% 
-  filter(is.na(poh_length_cm), is.na(fork_length_cm))
+  ggplot(aes(x = hatchery, y = fork_length_cm_predicted, color = species_from_oto))+
+  geom_hline(yintercept = 35)+
+  geom_jitter(width = 0.25, height= 0, size = 0.3)
 
-ggplot(deadpitch.df, aes(x = year, y = weight_g, group = year))+
-  geom_boxplot()+
-  facet_grid(sampling_event~okr_section)
+deadpitch.df %>%  
+  filter(species_from_oto == "sockeye", hatchery != "unknown") %>% 
+  tabyl(year, hatchery, section) %>% 
+  adorn_percentages("row") %>%
+  adorn_pct_formatting(digits = 2) %>%
+  adorn_ns()
+
+deadpitch.df %>% 
+  filter(species_from_oto == "sockeye", hatchery != "unknown") %>% 
+  group_by(year, section) %>%
+  summarise(prop_natural = sum(hatchery == "natural")/n(), total_fish = n()) %>% 
+  ggplot(aes(x = year, y = prop_natural, color = section))+
+  geom_point()+
+  geom_line()
+
+deadpitch.df %>% 
+  filter(fork_length_cm_predicted >35, hatchery != "unknown") %>% 
+  tabyl(year, hatchery, section) %>% 
+  adorn_percentages("row") %>%
+  adorn_pct_formatting(digits = 2) %>%
+  adorn_ns()
+
+deadpitch.df %>% 
+  filter(fork_length_cm_predicted >35, hatchery != "unknown") %>% 
+  group_by(year, section) %>%
+  summarise(prop_natural = sum(hatchery == "natural")/n(), total_fish = n()) %>% 
+  ggplot(aes(x = year, y = prop_natural, color = section))+
+  geom_point()+
+  geom_line()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
