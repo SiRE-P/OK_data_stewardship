@@ -2,6 +2,8 @@
 
 Things to check in the input files. Once checked, a note could be added to  "DeadpitchRawFileSourcesNotes.txt" under the file name
 
+-figure out which years were exclusively DFO PADS ageing, and which years had both ONA and DFO ageing
+-cross-compare to the PADS files? (discussed this with PT around October 7ish and he had not decided whether we should)
 -compare the ages in the "RawData" data file to "Aging Worksheet" and make sure they are the same (AO has done some already--I have to make a note of which ones)
 -if there are other worksheets/tabs that derive some of the values shown in the "RawData", are they consistent across the different tabs?
 -is it the same file that BJ originally used? If not, compare to BJ's version and see if they have the same ONA numbers
@@ -12,9 +14,10 @@ Things to check in the input files. Once checked, a note could be added to  "Dea
 -check against BJ's version (for some columns)
 
 
+
 -Margot's deadpitch files are available in this directory:
 Margot\!MARGOT\!OKANAGAN\1 SOCKEYE\!ADULT SOCKEYE\ADULT BIOLOGICAL TRAITS
-(HS has a copy of Margot's hard drive--it might be in a "laptops" superfolder, and so does PT)
+(Both PT and HS have a copy of Margot's hard drive--it might be in a "laptops" superfolder in what I gave to HS)
 
 
 
