@@ -6,6 +6,10 @@ Deadpitch Raw data file sources and some things to check
 *FWMT Deadpitch Adult.BioData 2022.xlsx
 Still need the finalized and QA/QC'd version from ONA
 
+(2023)
+Nerkid (Skaha) Deadpitch Adult.BioData_23.xlsx
+Still need the finalized ageing
+
 ------------end of waiting for ONA------------
 
 
