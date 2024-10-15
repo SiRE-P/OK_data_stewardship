@@ -405,7 +405,7 @@ deadpitch_hold <- dp_2000_2012 %>%
   bind_rows(
     df_2013_onward %>% 
       filter(sampling_event == "Deadpitch") %>% #remove broodstock data because it is not random and selects for larger individuals
-      select(date, okr_section, location, ona_number, sex, ona_age = european_age, dfo_age = dfo_age_from_otoliths, age_comment = aging_comments, age_sample_quality, fork_length_cm, poh_length_cm, weight_g, hatchery,  spawned, comments)
+      select(date, okr_section, reach, location, ona_number, sex, ona_age = european_age, dfo_age = dfo_age_from_otoliths, age_comment = aging_comments, age_sample_quality, fork_length_cm, poh_length_cm, weight_g, hatchery,  spawned, comments)
   ) %>% 
   mutate(year = year(date))
   
@@ -525,6 +525,8 @@ tabyl(deadpitch.df, thermal_marks)
 tabyl(deadpitch.df, hatchery, year)
 tabyl(deadpitch.df, location, year)
 tabyl(deadpitch.df, section, year)
+
+tabyl(deadpitch.df, location, reach)
 tabyl(deadpitch.df, okr_section, section)
 tabyl(deadpitch.df, location, section) %>% arrange(desc(lower_ok_river), desc(middle_ok_river), desc(shingle_creek), desc(upper_ok_river), desc(ok_lake_creeks))
 tabyl(deadpitch.df, spawned, year)
