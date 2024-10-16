@@ -1,6 +1,7 @@
 library(tidyverse)
 library(janitor)
 library(readxl)
+library(ggforce)
 
 
 #custom functions###
@@ -15,7 +16,7 @@ convert_to_decimal <- function(x) {
 is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
 
 #2000####
-dp_2000 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2000 sockeye biosampling.xls", sheet = "Sheet1") %>% 
+dp_2000 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2000 sockeye biosampling.xls", sheet = "Sheet1") %>% 
   clean_names() %>% 
   remove_empty(c("rows", "cols")) %>% 
   mutate(sex = case_when(female == 1 ~ "f", male == 1 ~ "m", TRUE ~ NA)) %>% 
@@ -31,7 +32,7 @@ tabyl(dp_2000, age)
 compare_df_cols(dp_2000)
 
 #2001####
-dp_2001 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2001 Sox Biosamples.xls", sheet = "DATA_ALL", na = "not taken") %>% 
+dp_2001 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2001 Sox Biosamples.xls", sheet = "DATA_ALL", na = "not taken") %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>%
@@ -45,7 +46,7 @@ tail(dp_2001)
 compare_df_cols(dp_2000, dp_2001)
 
 #2002####
-dp_2002 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2002 Sox Biosample MSversion.xls", sheet = "biosampling-ORIGINAL") %>% 
+dp_2002 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2002 Sox Biosample MSversion.xls", sheet = "biosampling-ORIGINAL") %>% 
   clean_names() %>%
   filter(weight_g != "*") %>% 
   remove_empty(c("rows", "cols")) %>% 
@@ -62,7 +63,7 @@ tail(dp_2002)
 compare_df_cols(dp_2000, dp_2001, dp_2002)
 
 #2003####
-dp_2003 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2003 all data.xls", sheet = "Orig Biosample Data") %>% 
+dp_2003 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2003 all data.xls", sheet = "Orig Biosample Data") %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(sex = case_when(female == 1 ~ "f", male == 1 ~ "m", TRUE ~ NA)) %>% 
@@ -77,7 +78,7 @@ tail(dp_2003)
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003)
 
 #2004####
-dp_2004 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2004 Biosampling.xls", sheet = "data entry") %>% 
+dp_2004 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2004 Biosampling.xls", sheet = "data entry") %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date_hold = mdy(date)) %>% 
@@ -88,7 +89,7 @@ dp_2004 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2004 Biosampling.xls"
   #mutate(ona_no = as.numeric(ona_no)) %>% 
   select(date, ona_number = ona_no, species, sex = sex_m_f, fork_length_cm, weight_g, location = lake_river, comments, scales_taken_y_n = scales_y_n, stomach_y_n, eggs_y_n, kidney_vial, ovarian_fluid_y_n, crew)
 
-ages_2004 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2004 Biosampling.xls", sheet = "Ages from PADS", skip = 2) %>% 
+ages_2004 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2004 Biosampling.xls", sheet = "Ages from PADS", skip = 2) %>% 
   clean_names()
 
 dp_2004 <- left_join(dp_2004, ages_2004 %>% 
@@ -103,7 +104,7 @@ tail(dp_2004)
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004)
 
 #2005####
-dp_2005 <- read_excel("../../SIRE_data/deadpitch/2000-2012/2005 Biosample Summary.xls", sheet = "mdb transfer") %>% 
+dp_2005 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2005 Biosample Summary.xls", sheet = "mdb transfer") %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>%
@@ -119,7 +120,7 @@ compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005)
 #no ages in 2006 dead pitch - they are available in the brood stock fish, but those are not included because they select for large fish
 #only intact fish are sized
 #notes available in the INFO tab of datasheet
-dp_2006 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Adults 2006 Summary.xls", sheet = "Deadpitch") %>% 
+dp_2006 <- read_excel("../../okanagan_data/deadpitch/2000-2012/!Adults 2006 Summary.xls", sheet = "Deadpitch") %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>%
@@ -131,7 +132,7 @@ tail(dp_2006)
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006)
 
 #2007####
-dp_2007 <- read_excel("../../SIRE_data/deadpitch/2000-2012/Skaha_Osys_Dedptch_07.xls", sheet = "Deadpitch", skip = 6) %>% 
+dp_2007 <- read_excel("../../okanagan_data/deadpitch/2000-2012/Skaha_Osys_Dedptch_07.xls", sheet = "Deadpitch", skip = 6) %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>% 
@@ -165,12 +166,12 @@ dp_2007 %>%
   geom_jitter()
 # in 2007, all of the fish id'd as kokanee based on otoliths were too large to be kokanee, and this was the case regardless of whether they were labelled as mixed up or not in the spreadsheet. 
 # opting to remove the age data from this year since this makes it suspect
-dp_2007$age <- NA
+#dp_2007$age <- NA
 
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007)
 
 #2008####
-dp_2008 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Adults 2008 Summary_all_data.xls", sheet = "Deadpitch Data") %>% 
+dp_2008 <- read_excel("../../okanagan_data/deadpitch/2000-2012/!Adults 2008 Summary_all_data.xls", sheet = "Deadpitch Data") %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>% 
@@ -183,7 +184,7 @@ tail(dp_2008)
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008)
 
 #2009####
-dp_2009 <- read_excel("../../SIRE_data/deadpitch/2000-2012/Deadpitch_Thermal_Marks_2009.xls", sheet = "Original", skip = 6) %>% 
+dp_2009 <- read_excel("../../okanagan_data/deadpitch/2000-2012/Deadpitch_Thermal_Marks_2009.xls", sheet = "Original", skip = 6) %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>% 
@@ -196,7 +197,7 @@ tail(dp_2009)
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, dp_2007, dp_2008, dp_2009)
 
 #2010####
-dp_2010 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Adults Summary 2010.xls", sheet = "Deadpitch_Data", na = "not aged") %>% 
+dp_2010 <- read_excel("../../okanagan_data/deadpitch/2000-2012/!Adults Summary 2010.xls", sheet = "Deadpitch_Data", na = "not aged") %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>% 
@@ -212,7 +213,7 @@ compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, d
 #2011####
 #note that the spreadsheet is dated 2012 but the data are from 2011
 #there is a Deadpitch_Original (2) sheet that also has PBS ages, but these seem to be out of order in some cases 
-dp_2011 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!Deadpitch Data LW 5_Mar_2012.xls", sheet = "Deadpitch_Original", skip = 6) %>% 
+dp_2011 <- read_excel("../../okanagan_data/deadpitch/2000-2012/!Deadpitch Data LW 5_Mar_2012.xls", sheet = "Deadpitch_Original", skip = 6) %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>% 
@@ -228,7 +229,7 @@ compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006, d
 
 
 #2012####
-dp_2012 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!2012 Ok Sox Biodata correct ages.xlsx", sheet = "Biosampling", skip = 6) %>% 
+dp_2012 <- read_excel("../../okanagan_data/deadpitch/2000-2012/!2012 Ok Sox Biodata correct ages.xlsx", sheet = "Biosampling", skip = 6) %>% 
   clean_names() %>% 
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>% 
@@ -236,7 +237,7 @@ dp_2012 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!2012 Ok Sox Biodata 
   filter(!is.na(date)) %>% 
   filter(!is.na(location))
 
-ages_2012 <- read_excel("../../SIRE_data/deadpitch/2000-2012/!2012 Ok Sox Biodata correct ages.xlsx", sheet = "Aged Otos with Biodata") %>% 
+ages_2012 <- read_excel("../../okanagan_data/deadpitch/2000-2012/!2012 Ok Sox Biodata correct ages.xlsx", sheet = "Aged Otos with Biodata") %>% 
   clean_names() %>% 
   select(vial_number, age = age_pbs_lab, age_ona_lab, thermal_marks) %>% 
   mutate(age = as.character(as.numeric(age)))
@@ -268,7 +269,7 @@ read_and_clean <- function(file) {
     raw_data_sheet <- sheet_names[grepl("RawData", sheet_names)][1]  # Take the first "RawData" sheet
     
     #deal with the issue of multiple header lines in at least one year
-    if(file == "../../SIRE_data/deadpitch/modern_era/!SK Adult BioData Collection Sheet 2013 2Jun14.xlsx"){
+    if(file == "../../okanagan_data/deadpitch/modern_era/!SK Adult BioData Collection Sheet 2013 2Jun14.xlsx"){
       df_list_hold <- read_excel(file, sheet = raw_data_sheet, na = c("n/a", "-", "ns", "NS", "NR"), guess_max = 1e5) %>% 
         clean_names()
       df_list <- read_excel(file, sheet = raw_data_sheet, na = c("n/a", "-", "ns", "NS", "NR"), guess_max = 1e5, skip = 1) %>% 
@@ -276,7 +277,7 @@ read_and_clean <- function(file) {
       names(df_list) <- names(df_list_hold)
       
     } else{
-      if(file == "../../SIRE_data/deadpitch/modern_era/SK Adult.BioData Collection Sheet 2015.xlsx"){ #because 2015 has 2 raw data sheets and the first one does not have any aging data
+      if(file == "../../okanagan_data/deadpitch/modern_era/SK Adult.BioData Collection Sheet 2015.xlsx"){ #because 2015 has 2 raw data sheets and the first one does not have any aging data
         
         df_list <- read_excel(file, sheet = "2015 Raw data", na = c("n/a", "-", "ns"), guess_max = 1e5) %>% 
           clean_names
@@ -327,7 +328,7 @@ read_and_clean <- function(file) {
     }
   }
   
-  if(file == "../../SIRE_data/deadpitch/modern_era/SK Adult.BioData Collection Sheet 2014.xlsx"){
+  if(file == "../../okanagan_data/deadpitch/modern_era/SK Adult.BioData Collection Sheet 2014.xlsx"){
     df <- rename(df, location = okr_section, okr_section = location)
   }
   
@@ -385,7 +386,7 @@ read_and_clean <- function(file) {
 }
 
 #get list of excel files in directory
-file_list <- list.files(path = "../../SIRE_data/deadpitch/modern_era/", pattern = "*.xlsx", full.names = TRUE)
+file_list <- list.files(path = "../../okanagan_data/deadpitch/modern_era/", pattern = "*.xlsx", full.names = TRUE)
 
 #bind all files together
 df_2013_onward <- data.frame()
@@ -430,11 +431,18 @@ deadpitch.df <- deadpitch_hold %>%
     location = str_remove(location, ";.*"), #remove pit tag entries in location
     location = str_replace_all(location, "\\.", ""),  # Remove periods
     location = str_replace_all(location, "broodstock$", "broodstock site"),  # Add "site" to "broodstock" when it's missing
-    location = str_replace_all(location, "^enhanced - golf$", "enhanced section - golf bridge"),
     location = str_replace_all(location, "^(golf - kvr|golf bridge - kvr|golf bridge - kvr pilings)$", "golf bridge - kvr bridge"),
     location = str_replace_all(location, "^(vds 15 - vds 15|vds 15 - vds 16|vds 15 - vds 17|vds 15 - vds 18|vds 15 - vds 19|vds 15 - vds 20)$", "vds 15 - vds 14"),
     location = str_replace_all(location, "ok falls - vds 17$|okanagan provincial park - vds 17", "ok falls prov park - vds 17"),
-    location = str_replace_all(location, "^hwy - enhanced$", "hwy bridge - enhanced section")
+    location = str_replace_all(location, "\\bgolf(?! bridge)\\b", "golf bridge"),
+    location = str_replace_all(location, "\\benhanced(?! section)\\b", "enhanced section"),
+    location = str_replace_all(location, "egg take", "broodstock site"),
+    location = str_replace_all(location, "bridge crossing", "bridge"),
+    location = str_replace_all(location, "hwy(?! 97)\\b", "hwy 97"),
+    location = str_replace_all(location, "hwy 97(?! bridge\\b)", "hwy 97 bridge"),
+    location = str_replace_all(location, "$spawning grounds", "okanagan river spawning grounds"),
+    location = str_replace_all(location, "okanagan$", "okanagan river"),
+    location = str_replace_all(location, "osoyoos$", "osoyoos lake"),
   ) %>% 
   mutate(ona_age = as.character(as.numeric(ona_age))) %>% 
   mutate(age = as.numeric(ifelse(!is.na(dfo_age), dfo_age, ona_age))) %>% 
@@ -447,6 +455,7 @@ deadpitch.df <- deadpitch_hold %>%
   mutate(species_from_oto = case_when(is.wholenumber(as.numeric(age)) ~ "kokanee",
                                       !is.wholenumber(as.numeric(age)) ~ "sockeye",
                                       is.na(age) ~ NA_character_)) %>% 
+  mutate(age = factor(age, levels = c(1,2,3,4,5, 1.1, 2.1, 1.2, 2.2, 1.3, 1.4), ordered =  TRUE)) %>% 
   mutate(location = ifelse(year == 2013, NA, location)) %>%  #removing location in 2013 because they are just labelled as okanagan river but this includes both lower and middle river - okr section (and reach) distinguish these
   mutate(okr_section = ifelse(!is.na(location) & location == "ok falls prov park - vds 17", "above mcintyre", okr_section))
 
@@ -456,27 +465,19 @@ upper_ok_river <- c("penticton channel", "skaha lake")
 shingle_creek <- c("shingle creek")
 
 lower_ok_river2 <- c("boat launch - broodstock site", 
-                     "boat launch - egg take", 
                      "boat launch - island rd", 
-                     "deer park - hwy bridge", 
+                     "deer park - hwy 97 bridge", 
                      "hwy 97 bridge - boat launch", 
-                     "hwy 97 bridge crossing - boat launch",
-                     "hwy bridge - beach seine # 1", 
-                     "hwy bridge - boat launch", 
-                     "hwy bridge - broodstock site", 
-                     "hwy bridge - egg take",
-                     "hwy bridge - vds13",
-                     "island rd - broodstock site",
+                     "hwy 97 bridge - beach seine # 1",
+                     "hwy 97 bridge - broodstock site", 
+                     "hwy 97 bridge - vds13",
+                     "island rd - broodstock site", #just below boat launch
                      "mcintyre dam",
-                     "okanagan",
                      "okanagan river",
-                     "okanagan river spawning grounds",
-                     "osoyoos",
+                     "okanagan river spawning grounds", #natural and seminatural section
                      "osoyoos lake",
                      "spawning grounds",
-                     "transect 2 - hwy 97 bridge",
-                     "transect 2 - hwy 97 bridge crossing",
-                     "transect 2 - hwy bridge"
+                     "transect 2 - hwy 97 bridge"
                      )
 middle_ok_river2 <- c("ok falls prov park - vds 17",
                       "vds 17 - vds 16", 
@@ -558,6 +559,10 @@ deadpitch.df <- deadpitch.df %>%
   select(-fork_length_cm)
 
 summary(deadpitch.df$fork_length_cm_predicted)
+#remove fish with no data for fork length, ona number, age, or weight
+deadpitch.df <- deadpitch.df %>% 
+  filter(!is.na(fork_length_cm_predicted) | !is.na(ona_number) | !is.na(age) | !is.na(weight_g))
+
 ggplot(deadpitch.df, aes(x = fork_length_cm_predicted, color = species_from_oto))+
   geom_density()+
   theme_bw()
@@ -567,6 +572,12 @@ ggplot(deadpitch.df, aes(x = species_from_oto, y = fork_length_cm_predicted, gro
   geom_violin(fill = NA, color = 1)+
   theme_bw()+
   facet_wrap(~year)
+
+deadpitch.df %>% 
+  filter(!is.na(age)) %>% 
+  ggplot(aes(x = age, y = fork_length_cm_predicted, fill = species_from_oto))+
+  geom_violin(scale = "width")+
+  geom_sina(scale = "width", size = 0.6, alpha = 0.2)
 
 deadpitch.df %>% 
   ggplot(aes(x = age, y = fork_length_cm_predicted, color = age_source, shape = age_agrees))+
@@ -609,12 +620,22 @@ deadpitch.df %>%
   geom_point()+
   geom_line()
 
+deadpitch.df %>% 
+  filter(species_from_oto == "sockeye") %>% 
+  group_by(year, section) %>% 
+  summarise(sock_1.1_prop = sum(age == 1.1)/n()) %>% 
+  ggplot(aes(x = year, y = sock_1.1_prop, color = section))+
+  geom_point()+
+  geom_line()+
+  facet_wrap(~section)
 
 
-
-
-
-
+deadpitch.df %>% 
+  filter(species_from_oto == "sockeye") %>% 
+  tabyl(age, year, section) %>% 
+  adorn_totals(c("col")) %>%
+  adorn_percentages("col") %>% 
+  adorn_pct_formatting(rounding = "half up", digits = 0) %>% adorn_ns()
 
 
 
