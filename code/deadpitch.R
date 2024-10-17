@@ -2,7 +2,7 @@ library(tidyverse)
 library(janitor)
 library(readxl)
 library(ggforce)
-
+library(patchwork)
 
 #custom functions###
 convert_to_decimal <- function(x) {
@@ -14,6 +14,14 @@ convert_to_decimal <- function(x) {
 }
 
 is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
+
+euro_age_from_gilbert <- function(x){
+  gilbert_rich_age = as.numeric(x)
+  total_age = as.numeric(substr(gilbert_rich_age , 1, nchar(gilbert_rich_age ) - 1))
+  age_to_sea = as.numeric(substr(gilbert_rich_age , nchar(gilbert_rich_age ), nchar(gilbert_rich_age )))
+  age = ifelse(is.na(gilbert_rich_age), NA, paste0(age_to_sea - 1, ".", total_age - age_to_sea))
+  return(age)
+}
 
 #2000####
 dp_2000 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2000 sockeye biosampling.xls", sheet = "Sheet1") %>% 
@@ -114,6 +122,17 @@ dp_2005 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2005 Biosample Su
 
 tail(dp_2005)
 
+pen_2005 <- read_excel("../../okanagan_data/deadpitch/penticton_channel_2005-2015/KO biosampling_05.xlsx", sheet = "Sheet1") %>% 
+  clean_names() %>%
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>%
+  mutate(age = euro_age_from_gilbert(gilbert_rich_age)) %>% 
+  mutate(okr_section = "penticton channel") %>% 
+  select(date, ona_no, okr_section, age, sex = sex_m_f, fork_length_cm = length_cm, weight_g, age, eggs_y_n, comments)%>% 
+  filter(!is.na(date))
+
+dp_2005 <- bind_rows(dp_2005, pen_2005)
+
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005)
 
 #2006####
@@ -129,6 +148,20 @@ dp_2006 <- read_excel("../../okanagan_data/deadpitch/2000-2012/!Adults 2006 Summ
 
 tail(dp_2006)
 
+pen_2006 <- read_excel("../../okanagan_data/deadpitch/penticton_channel_2005-2015/KO biosampling_06.xlsx", sheet = "Sheet1") %>% 
+  clean_names() %>%
+  filter(!is.na(date)) %>% 
+  type.convert(as.is = TRUE) %>%      
+  remove_empty(c("rows", "cols")) %>% 
+  mutate(date = convert_to_date(date)) %>%
+  mutate(age = euro_age_from_gilbert(gilbert_rich_age)) %>% 
+  mutate(okr_section = "penticton channel") %>% 
+  select(date, ona_no, okr_section, age, sex = sex_m_f, fork_length_cm = length_cm, weight_g, age, eggs_y_n, comments)%>% 
+  
+
+dp_2005 <- bind_rows(dp_2005, pen_2005)
+
+
 compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005, dp_2006)
 
 #2007####
@@ -136,11 +169,7 @@ dp_2007 <- read_excel("../../okanagan_data/deadpitch/2000-2012/Skaha_Osys_Dedptc
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>% 
-  mutate(
-    gilbert_rich_age = as.numeric(gilbert_rich_age),
-    total_age = as.numeric(substr(gilbert_rich_age , 1, nchar(gilbert_rich_age ) - 1)),
-    age_to_sea = as.numeric(substr(gilbert_rich_age , nchar(gilbert_rich_age ), nchar(gilbert_rich_age ))),
-    age = ifelse(is.na(gilbert_rich_age), NA, paste0(age_to_sea - 1, ".", total_age - age_to_sea))) %>% 
+  mutate(age = euro_age_from_gilbert(gilbert_rich_age)) %>% 
   mutate(possibly_mixed_up = ifelse(ona_number > 14769 & ona_number < 14870, TRUE, FALSE)) %>% 
   select(date, ona_number, species, fork_length_cm = length_cm, thermal_marks, age, sex = sex_m_f, location = comments, possibly_mixed_up)%>% 
   filter(!is.na(date))
@@ -269,7 +298,7 @@ read_and_clean <- function(file) {
     raw_data_sheet <- sheet_names[grepl("RawData", sheet_names)][1]  # Take the first "RawData" sheet
     
     #deal with the issue of multiple header lines in at least one year
-    if(file == "../../okanagan_data/deadpitch/modern_era/!SK Adult BioData Collection Sheet 2013 2Jun14.xlsx"){
+    if(file == "../../okanagan_data/deadpitch/2013_onwards/!SK Adult BioData Collection Sheet 2013 2Jun14.xlsx"){
       df_list_hold <- read_excel(file, sheet = raw_data_sheet, na = c("n/a", "-", "ns", "NS", "NR"), guess_max = 1e5) %>% 
         clean_names()
       df_list <- read_excel(file, sheet = raw_data_sheet, na = c("n/a", "-", "ns", "NS", "NR"), guess_max = 1e5, skip = 1) %>% 
@@ -277,7 +306,7 @@ read_and_clean <- function(file) {
       names(df_list) <- names(df_list_hold)
       
     } else{
-      if(file == "../../okanagan_data/deadpitch/modern_era/SK Adult.BioData Collection Sheet 2015.xlsx"){ #because 2015 has 2 raw data sheets and the first one does not have any aging data
+      if(file == "../../okanagan_data/deadpitch/2013_onwards/SK Adult.BioData Collection Sheet 2015.xlsx"){ #because 2015 has 2 raw data sheets and the first one does not have any aging data
         
         df_list <- read_excel(file, sheet = "2015 Raw data", na = c("n/a", "-", "ns"), guess_max = 1e5) %>% 
           clean_names
@@ -328,7 +357,7 @@ read_and_clean <- function(file) {
     }
   }
   
-  if(file == "../../okanagan_data/deadpitch/modern_era/SK Adult.BioData Collection Sheet 2014.xlsx"){
+  if(file == "../../okanagan_data/deadpitch/2013_onwards/SK Adult.BioData Collection Sheet 2014.xlsx"){
     df <- rename(df, location = okr_section, okr_section = location)
   }
   
@@ -386,7 +415,7 @@ read_and_clean <- function(file) {
 }
 
 #get list of excel files in directory
-file_list <- list.files(path = "../../okanagan_data/deadpitch/modern_era/", pattern = "*.xlsx", full.names = TRUE)
+file_list <- list.files(path = "../../okanagan_data/deadpitch/2013_onwards/", pattern = "*.xlsx", full.names = TRUE)
 
 #bind all files together
 df_2013_onward <- data.frame()
@@ -409,7 +438,7 @@ deadpitch_hold <- dp_2000_2012 %>%
       select(date, okr_section, reach, location, ona_number, sex, ona_age = european_age, dfo_age = dfo_age_from_otoliths, age_comment = aging_comments, age_sample_quality, fork_length_cm, poh_length_cm, weight_g, hatchery,  spawned, comments)
   ) %>% 
   mutate(year = year(date))
-  
+
 
 #clean up combined data###
 deadpitch.df <- deadpitch_hold %>% 
@@ -451,11 +480,11 @@ deadpitch.df <- deadpitch_hold %>%
   mutate(age_source = ifelse(!is.na(dfo_age), "DFO", ifelse(!is.na(ona_age), "ONA", NA))) %>% 
   filter(fork_length_cm < 70 | is.na(fork_length_cm)) %>%  # remove fish that are larger than largest ever recorded Sockeye - likely Chinook
   mutate(poh_length_cm = ifelse(poh_length_cm < 5 & fork_length_cm > 30, NA, poh_length_cm)) %>%  # remove impossibly small poh on fish that have fork_length > 30 cm
-  mutate(age = ifelse(age==0, NA, age)) %>% 
+  mutate(age = ifelse(age %in% c(0, 1, 2), NA, age)) %>% 
   mutate(species_from_oto = case_when(is.wholenumber(as.numeric(age)) ~ "kokanee",
                                       !is.wholenumber(as.numeric(age)) ~ "sockeye",
                                       is.na(age) ~ NA_character_)) %>% 
-  mutate(age = factor(age, levels = c(1,2,3,4,5, 1.1, 2.1, 1.2, 2.2, 1.3, 1.4), ordered =  TRUE)) %>% 
+  mutate(age = factor(age, levels = c(3,4,5, 1.1, 2.1, 1.2, 2.2, 1.3, 1.4), ordered =  TRUE)) %>% 
   mutate(location = ifelse(year == 2013, NA, location)) %>%  #removing location in 2013 because they are just labelled as okanagan river but this includes both lower and middle river - okr section (and reach) distinguish these
   mutate(okr_section = ifelse(!is.na(location) & location == "ok falls prov park - vds 17", "above mcintyre", okr_section))
 
@@ -478,7 +507,7 @@ lower_ok_river2 <- c("boat launch - broodstock site",
                      "osoyoos lake",
                      "spawning grounds",
                      "transect 2 - hwy 97 bridge"
-                     )
+)
 middle_ok_river2 <- c("ok falls prov park - vds 17",
                       "vds 17 - vds 16", 
                       "vds 16 - vds 15",
@@ -506,13 +535,26 @@ deadpitch.df <- deadpitch.df %>%
 
 
 #clean up spawned
-table(deadpitch.df$spawned)
+tabyl(deadpitch.df$spawned)
+tabyl(deadpitch.df, year, spawned)
 deadpitch.df$spawned <- str_to_lower(deadpitch.df$spawned)
 deadpitch.df$spawned[deadpitch.df$spawned == "n"] <- "no"
 deadpitch.df$spawned[deadpitch.df$spawned == "y" | deadpitch.df$spawned == "s" | deadpitch.df$spawned == "yy"] <- "yes"
 deadpitch.df$spawned[deadpitch.df$spawned == "p" | deadpitch.df$spawned == "ps"] <- "partial"
 table(deadpitch.df$spawned)
-         
+
+#clean up sex
+tabyl(deadpitch.df, sex) %>%   adorn_pct_formatting(rounding = "half up", digits = 0)
+tabyl(deadpitch.df, year, sex) %>% adorn_percentages("col") %>%   adorn_pct_formatting(rounding = "half up", digits = 0)
+
+deadpitch.df <- deadpitch.df %>% 
+  mutate(sex = str_replace_all(sex, "\\*|-|\\?|u|unk|imm", NA_character_)) %>% 
+  mutate(sex = str_replace_all(sex, "f, green|f,green", "f")) %>% 
+  mutate(sex = str_replace_all(sex, "jack|m jack|m ko", "m"))
+tabyl(deadpitch.df, year, sex)
+tabyl(deadpitch.df, age, sex)
+
+tabyl(deadpitch.df %>% filter(age == "1.1"), year, sex)
 
 #post processing and checks####
 tabyl(deadpitch.df, year)
@@ -580,6 +622,19 @@ deadpitch.df %>%
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)
 
 deadpitch.df %>% 
+  filter(!is.na(age)) %>% 
+  ggplot(aes(x = age, y = fork_length_cm_predicted, fill = species_from_oto))+
+  geom_violin(scale = "width")+
+  geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
+  facet_grid(hatchery~sex)
+
+deadpitch.df %>% 
+  ggplot(aes(x = age, y = fork_length_cm_predicted, color = species_from_oto))+
+  geom_jitter(height = 0, width = 0.25)+
+  facet_wrap(~year)+
+  scale_shape_manual(values = c(1, 16, 15))
+
+deadpitch.df %>% 
   ggplot(aes(x = age, y = fork_length_cm_predicted, color = age_source, shape = age_agrees))+
   geom_jitter(height = 0, width = 0.25)+
   facet_wrap(~year)+
@@ -598,14 +653,6 @@ deadpitch.df %>%
   adorn_ns()
 
 deadpitch.df %>% 
-  filter(species_from_oto == "sockeye", hatchery != "unknown") %>% 
-  group_by(year, section) %>%
-  summarise(prop_natural = sum(hatchery == "natural")/n(), total_fish = n()) %>% 
-  ggplot(aes(x = year, y = prop_natural, color = section))+
-  geom_point()+
-  geom_line()
-
-deadpitch.df %>% 
   filter(fork_length_cm_predicted >35, hatchery != "unknown") %>% 
   tabyl(year, hatchery, section) %>% 
   adorn_percentages("row") %>%
@@ -613,12 +660,24 @@ deadpitch.df %>%
   adorn_ns()
 
 deadpitch.df %>% 
+  filter(species_from_oto == "sockeye", hatchery != "unknown") %>% 
+  group_by(year, section) %>%
+  summarise(prop_natural = sum(hatchery == "natural")/n(), total_fish = n()) %>% 
+  ggplot(aes(x = year, y = prop_natural, color = section))+
+  geom_point(aes(size = total_fish))+
+  scale_size_binned(breaks = c(1, 10, 50, 100))+
+  geom_line()+
+  ggtitle("species from otoliths")+
+  
+  deadpitch.df %>% 
   filter(fork_length_cm_predicted >35, hatchery != "unknown") %>% 
   group_by(year, section) %>%
   summarise(prop_natural = sum(hatchery == "natural")/n(), total_fish = n()) %>% 
   ggplot(aes(x = year, y = prop_natural, color = section))+
-  geom_point()+
-  geom_line()
+  scale_size_binned(breaks = c(1, 10, 50, 100))+
+  geom_point(aes(size = total_fish))+
+  geom_line()+
+  ggtitle("sockeye > 35 cm")
 
 deadpitch.df %>% 
   filter(species_from_oto == "sockeye") %>% 
