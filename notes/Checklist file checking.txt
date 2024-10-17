@@ -14,6 +14,8 @@ Things to check in the input files. Once checked, a note could be added to  "Dea
 -check against BJ's version (for some columns)
 
 
+"kok PADS fr RyanB - wkg.xlsx"  - Seems that I incorp'd this in the "ONA & PADS 2009 Skaha kok sprs.xlsx", BUT there are "Gaff (deadpitch)" data that did not correspond to the data entry/raw data sheet that Ryan gave me.
+
 
 -Margot's deadpitch files are available in this directory:
 Margot\!MARGOT\!OKANAGAN\1 SOCKEYE\!ADULT SOCKEYE\ADULT BIOLOGICAL TRAITS
