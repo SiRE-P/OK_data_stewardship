@@ -8,3 +8,5 @@
 - "../../SIRE_data/deadpitch/!SK Adult BioData Collection Sheet 2013 2Jun14.xlsx" has NS and NR. I think these are not sampled and not recorded. - switching to NA
 - in 2011 there is a Deadpitch_Original (2) sheet that also has PBS ages, but these seem to be out of order in some cases - going with the ages in Deadpitch_Original
 - in 2007, all of the fish id'd as kokanee based on otoliths were too large to be kokanee, and this was the case regardless of whether they were labelled as mixed up or not in the spreadsheet. I am opting to remove the age data from this year since this makes it suspect.
+- in 2013 pen channel, ona_fish # 104326 is marked hatchery, but is marked unmarked for origin and is aged as a kokanee. Assuming this is an error and relabelling it a natural fish
+- ages in 2007 pen channel look to be too high. Most fish are labelled as 55s which corresponds to age 4.0s, but in other years most kokanee are age 3s. The distribution of lengths for these fish also suggests that they are age 3s. For now, I am subtracting a year from these fish. 
