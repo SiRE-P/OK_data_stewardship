@@ -586,11 +586,12 @@ deadpitch.df <- deadpitch_hold %>%
   filter(fork_length_cm < 70 | is.na(fork_length_cm)) %>%  # remove fish that are larger than largest ever recorded Sockeye - likely Chinook
   mutate(poh_length_cm = ifelse(poh_length_cm < 5 & fork_length_cm > 30, NA, poh_length_cm)) %>%  # remove impossibly small poh on fish that have fork_length > 30 cm
   mutate(fork_length_cm = ifelse(fork_length_cm < 5, NA, fork_length_cm)) %>%  # remove impossibly small fork length fish
-  mutate(age = ifelse(age %in% c(0, 1, 2), NA, age)) %>% 
+  mutate(age = ifelse(age %in% c(0, 1), NA, age)) %>% 
+  mutate(age = ifelse(age == 2 & fork_length_cm > 35, NA, age)) %>% #make age NA for weird 2007 fish that are large but labelled as 2.0s
   mutate(species_from_oto = case_when(is.wholenumber(as.numeric(age)) ~ "kokanee",
                                       !is.wholenumber(as.numeric(age)) ~ "sockeye",
                                       is.na(age) ~ NA_character_)) %>% 
-  mutate(age = factor(age, levels = c(3,4,5,6, 1.1, 2.1, 1.2, 2.2, 1.3, 1.4), ordered =  TRUE)) %>% 
+  mutate(age = factor(age, levels = c(2,3,4,5,6, 1.1, 2.1, 1.2, 2.2, 1.3, 1.4), ordered =  TRUE)) %>% 
   mutate(location = ifelse(year == 2013, NA, location)) %>%  #removing location in 2013 because they are just labelled as okanagan river but this includes both lower and middle river - okr section (and reach) distinguish these
   mutate(okr_section = ifelse(!is.na(location) & location == "ok falls prov park - vds 17", "above mcintyre", okr_section))
 
@@ -665,6 +666,7 @@ tabyl(deadpitch.df %>% filter(age == "1.1"), year, sex)
 #post processing and checks####
 tabyl(deadpitch.df, year)
 tabyl(deadpitch.df, species_from_oto)
+tabyl(deadpitch.df, year, section, species_from_oto)
 tabyl(deadpitch.df, species)
 tabyl(deadpitch.df, age, year)
 tabyl(deadpitch.df, age_source, year)
@@ -735,10 +737,24 @@ deadpitch.df %>%
 
 deadpitch.df %>% 
   filter(!is.na(age)) %>% 
+  ggplot(aes(x = year, y = fork_length_cm_predicted, group = year))+
+  geom_violin(scale = "width")+
+  geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
+  facet_wrap(~age)
+
+deadpitch.df %>% 
+  filter(!is.na(age)) %>% 
   ggplot(aes(x = age, y = fork_length_cm_predicted, fill = species_from_oto))+
   geom_violin(scale = "width")+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
   facet_grid(hatchery~sex)
+
+deadpitch.df %>% 
+  filter(!is.na(age)) %>% 
+  ggplot(aes(x = sex, y = fork_length_cm_predicted, fill = species_from_oto))+
+  geom_violin(scale = "width")+
+  geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
+  facet_grid(~age)
 
 deadpitch.df %>% 
   ggplot(aes(x = age, y = fork_length_cm_predicted, color = species_from_oto))+
@@ -773,14 +789,6 @@ deadpitch.df %>%
   adorn_percentages("row") %>%
   adorn_pct_formatting(digits = 2) %>%
   adorn_ns()
-
-%>% 
-  ggplot(aes(x = year, y = prop_natural, color = section))+
-  geom_point(aes(size = total_fish))+
-  scale_size_binned(breaks = c(1, 10, 50, 100))+
-  geom_line()+
-  ggtitle("species from otoliths")
-  
   
 deadpitch.df %>% 
   filter(species_from_oto == "sockeye", hatchery != "unknown") %>% 
@@ -813,7 +821,14 @@ deadpitch.df %>%
   adorn_pct_formatting(rounding = "half up", digits = 0)
 
 
-
+#write csv####
+write.csv(deadpitch.df %>% 
+            select(year, date, section, okr_section, location, reach, ona_number,
+                   age, dfo_age, ona_age, age_source, age_agrees, species_from_oto, age_sample_quality, age_comment,
+                   hatchery, thermal_marks, 
+                   fork_length_cm_measured, poh_length_cm, fork_length_imputed, fork_length_cm_predicted, 
+                   weight_g, sex, spawned, comments)
+          , file = "../../okanagan_data/deadpitch/combined_and_cleaned/okanagan_deadpitch.csv")
 
 
 
