@@ -1,0 +1,150 @@
+---
+title: "Metadata for the cleaned and combined Okanagan sockeye deadpitch data file -- okanagan_deadpitch.csv  "
+author: "| Patrick L. Thompson$^{1}$^[Corresponding author: patrick.thompson@dfo-mpo.gc.ca], Athena Ogden$^2$,  Howard Stiff$^2$\n|
+  $^1$Pacific Science Enterprise Centre, Fisheries and Oceans Canada, Sidney, B.C., Canada\n|
+  $^2$Pacific Biological Station, Fisheries and Oceans Canada, Nanaimo, B.C., Canada\n"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+    bookdown::pdf_document2:
+      toc: false
+      number_sections: false
+      fig_caption: true
+      keep_tex: false
+classoption: landscape
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, 
+  output_dir = "../../../okanagan_data/deadpitch/combined_and_cleaned/", 
+  output_file = "okanagan_deadpitch_metadata.pdf") })
+always_allow_html: true
+link-citations: yes
+header-includes:
+  \usepackage{gensymb}
+  \setcounter{table}{0}  
+  \setcounter{figure}{0} 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r readdata, echo=FALSE, warning=FALSE, message=FALSE}
+# Load necessary package
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+
+# Read the CSV file
+deadpitch <- read.csv("../../../okanagan_data/deadpitch/combined_and_cleaned/okanagan_deadpitch.csv") %>% 
+  dplyr::select(-X)
+```
+## Overview of data
+This csv file contains all of the sockeye and kokanee data collected through deadpitch sampling from `r min(deadpitch$year)` to `r max(deadpitch$year)` in the Okanagan watershed, British Columbia. This data excludes broodstock data, which is sometimes combined with the deadpitch data because broodstock preferentially selects larger fish (notes in raw datasheets). The final datasets consists of a total of `r nrow(deadpitch)` individual fish. A list variables included in the data set and their descriptions is available in Table \@ref(tab:metadatatable).
+
+This data was collected by the Okanagan Nation Alliance in collaboration with the Fisheries and Oceans Canada (DFO) Salmon in Regional Ecosystems Program (SiRE-P). The SiRE-P program was led by Dr. Kim Hyatt until 2021, then was led by Dr. Athena Ogden and Howard Stiff until 2024, after which it has been led by Dr. Patrick Thompson. 
+
+The file was produced from the raw data files using R code which is available on Github (https://github.com/SiRE-P/OK_data_stewardship/blob/main/code/deadpitch.R). This script does not make any manipulations to the raw data files. The raw data files are subject to a data sharing agreement between the Okanagan Nation Alliance, Fisheries and Oceans Canada (DFO), and the Province of British Columbia and so are not available online. Noted discrepancies and how they were addressed are available in Table \@ref(tab:discrepancies). 
+
+```{r metadatatable, echo=FALSE, warning=FALSE, message=FALSE}
+metatable <- data.frame(variable = names(deadpitch),
+  class = unlist(sapply(deadpitch, class)), 
+                        description = c("survey year", 
+                                        "date survey was conducted", 
+                                        "section of the river",
+                                        "subsection of the river",
+                                        "location name",
+                                        "reach ID",
+                                        "ONA fish number",
+                                        "age in european format",
+                                        "age from DFO lab",
+                                        "age from ONA lab",
+                                        "age source used",
+                                        "are DFO and ONA ages the same",
+                                        "age sample quality",
+                                        "age sample comments",
+                                        "species based on aging",
+                                        "natural/hatchery",
+                                        "thermal marks from hatchery",
+                                        "fork length in cm based on poh",
+                                        "measured fork length in cm",
+                                        "poh length in cm",
+                                        "fork length imputation",
+                                        "weight in g",
+                                        "sex",
+                                        "spawned indicator",
+                                        "comments"),
+                        details = c("YYYY", "YYYY-MM-DD", "lower ok river---Osoyoos lake to McIntyre Dam middle river is McIntyre Dam to Okanagan Falls Dam\\; upper ok river---Penticton Channel from Skaha Lake to Penticton Dam\\; shingle creek---Shingle Creek\\; okanagan lake creeks---the creeks flowing into Okanagan Lake", 
+                                    "okr section used in raw data files in some years",
+                                    "specifies the specific location where the fish was collected",
+                                    "reach specified in raw data files in some years",
+                                    "unique number associated with the fish",
+                                    "est estimate of age in european format, which is number of freshwater years, decimal, number of marine years\\; Kokanees are integers, Sockeyes have decimal points\\; ages are from the DFO lab in initial years, but switch to the ONA lab in later years. There are two years of overlap, where we use DFO ages\\; both are provided in subsquent columns",
+                                    "european age from DFO Pacific Biological Station lab",
+                                    "european age from Okanagan Nation Alliance lab",
+                                    "indicator of which age source was used in age column",
+                                    "indicator of whether or not the DFO and ONA ages are the same when both are present",
+                                    "age sample quality metric where 0 is low and 5 is high",
+                                    "comments on aging from the raw data sheets",
+                                    "sockeye vs. kokanee as determined by the otolith aging based on whether or not the fish spent time in the ocean",
+                                    "indicator for whether or not fish is of natural or hatchery origin",
+                                    "specific thermal marks from the hatchery on the otoliths",
+                                    "estimimated from post orbital hypural length (poh\\; see below)\\; when poh is not available we use measured fork length\\; however, measured fork length is less precise because it is affected by tail erosion or development of lengthend snout during spawning",
+                                    "fork length in cm, measured in the field",
+                                    "post orbital hypural length in cm measured in the field\\; the length from the posterior edge of the eye socket to the plate at the posterior end of the spinal column",
+                                    "TRUE if fork length from poh cm was imputed based on poh\\; FALSE if it is from measured fork length",
+                                    "weight of the fish in g",
+                                    "sex as identified in the field; f for female, m for male",
+                                    "indicator of whether or not the fish has spawned\\; yes/partial/no",
+                                    "comments included in the raw data sheets"))
+# Print the table
+rownames(metatable) <- NULL
+metatable$variable <- gsub("_", "\\\\_", metatable$variable)
+
+metatable %>%
+  kbl("latex", longtable = TRUE, booktabs = TRUE, escape = FALSE, caption = "Table of variables in the okangan\\_deadpitch.csv file with their class and descriptions.") %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header", "striped")) %>% 
+  #column_spec(1, width = "3cm") %>%
+  #column_spec(2, width = "3cm") %>%
+  #column_spec(3, width = "3cm") %>% 
+  column_spec(4, width = "10cm") %>% 
+  row_spec(0, bold = TRUE)
+
+```
+
+```{r discrepancies, echo=FALSE, warning=FALSE, message=FALSE}
+data.frame(issue = c("SK Adult.BioData Collection Sheet 2015.xlsx - has two copies of RawData",
+                     "tag number in SK Adult.BioData Collection Sheet 2015.xlsx does not match format of tag number in other sheets, but it looks like Tag Number(s) does",
+                     "what does the table of data at the bottom of Penticton Channel deadpitch 2019-2021.xlsx sheet 2021 correspond to? It looks like it is some sort of summary",
+                     "ONA number 20350036 occurs twice in the dataset, once on 2020-11-03, and once on 2020-10-22. Both have the same otolith vial number. They are in consecutive rows (37, 37) in the datasheet - Shingle deadpitch 2019-2021 (002).xlsx and these are in the october dates. Is the November date an error? The rows contain non-overlapping info suggesting they are the same fish.",
+                     "SK Adult.BioData Collection Sheet 2014.xlsx has okr\\_section and location flipped",
+                     "SK Adult BioData Collection Sheet 2013 2Jun14.xlsx has NS and NR. I think these are not sampled and not recorded",
+                     "in 2011 there is a Deadpitch\\_Original (2) sheet that also has PBS ages, but these seem to be out of order in some cases",
+                     "there are some age 0s, 1s and 2s that are too large to be kokanee",
+                     "in 2013 pen channel, ona\\_fish number 104326 is marked hatchery, but is marked unmarked for origin and is aged as a kokanee",
+                     "ages in 2007 pen channel look to be too high. Most fish are labelled as 55s which corresponds to age 4.0s, but in other years most kokanee are age 3s. The distribution of lengths for these fish also suggests that they are age 3s.",
+                     "locations use inconsistent names",
+                     "poh lengths was greater than fork length for some fish",
+                     "fish with longer lengths than possible for sockeye",
+                      "some fish had impossibly small poh on fish for their fork length"),
+           decision = c("using first one",
+                        "using Tag Number(s)",
+                        "exlcuding for now",
+                        "removing november entry",
+                        "swapped okr\\_section and location",
+                        "switching NS and NR to NA",
+                        "using the ages in Deadpitch\\_Original",
+                        "setting age 0s and 1s to be NA, and setting age 2s to be NA if less than 35 cm",
+                        "assume this is an error, relablled as natural",
+                        "subtracting a year from these fish",
+                        "cleaned up names and aligned them based on consultation with K. Alex (ONA)",
+                        "set measured fork length to NA for these fish",
+                        "removed fish with fork length greater than 70 cm",
+                        "set poh to NA for fish with poh less than 5 cm when fork length is greater than 30 cm"
+                        
+                        )) %>% 
+  kbl("latex", longtable = TRUE, booktabs = TRUE, escape = FALSE, caption = "Table of discrepancies and decisions.") %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header", "striped")) %>% 
+  column_spec(1, width = "15cm") %>%
+  column_spec(2, width = "6cm") %>% 
+  row_spec(0, bold = TRUE)
+
+```
