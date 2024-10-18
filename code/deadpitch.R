@@ -718,12 +718,16 @@ summary(deadpitch.df)
 str(deadpitch.df)
 
 #check for multiples of ona_number
+deadpitch <- deadpitch %>% arrange(date)
+
 deadpitch.df %>%
   filter(!is.na(ona_number)) %>% 
   group_by(ona_number) %>% 
   mutate(n = n()) %>% 
   filter(n > 1)
 
+#remove duplicate fish number
+deadpitch.df <- deadpitch.df[!duplicated(deadpitch.df$ona_number, fromLast = TRUE) | is.na(deadpitch.df$ona_number), ]
 
 
 #plotting checks####
