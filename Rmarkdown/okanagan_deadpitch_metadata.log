@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.31)  18 OCT 2024 14:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.31)  18 OCT 2024 15:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -689,11 +689,11 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 15285 strings out of 474227
- 238820 string characters out of 5750434
+ 15287 strings out of 474227
+ 238840 string characters out of 5750434
  1950978 words of memory out of 5000000
  37144 multiletter control sequences out of 15000+600000
- 614800 words of font info for 133 fonts, out of 8000000 for 9000
+ 614883 words of font info for 134 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  83i,12n,93p,1110b,572s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2023
@@ -703,7 +703,7 @@ type1/public/lm/lmr10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lmr
 2023/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/texlive/2023/texmf-dist/font
 s/type1/public/lm/lmr8.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/lm/lm
 ri10.pfb>
-Output written on okanagan_deadpitch_metadata.pdf (4 pages, 193219 bytes).
+Output written on okanagan_deadpitch_metadata.pdf (4 pages, 193860 bytes).
 PDF statistics:
  88 PDF objects out of 1000 (max. 8388607)
  63 compressed objects within 1 object stream
