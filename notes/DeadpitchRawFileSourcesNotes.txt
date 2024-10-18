@@ -74,7 +74,9 @@ ONA & PADS 2009 Skaha kok sprs.xlsx
 from AO's "RyanB origs" folder
 
 "kok PADS fr nuseds - wkg.xlsx"
-from AO's "RyanB origs" folder, but it looks like it was actually downloaded by me from PADS
+from AO's "RyanB origs" folder, but it looks like it was actually downloaded by me from PADS; 
+-NB it has some data under gear "Gaff (Deadpitch)" that issn't seem to be included in the ageing data
+is something to check later
 
 (2010)
 !Adults Summary 2010.xls
