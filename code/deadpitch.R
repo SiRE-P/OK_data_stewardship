@@ -640,6 +640,32 @@ deadpitch.df <- deadpitch.df %>%
                              is.na(section) & location %in% okanagan_section ~ "ok_lake_creeks",
                              TRUE ~ section)) 
 
+#calculate fork lengths based on poh####
+#set fork lengths to NA if they are less than poh
+deadpitch.df <- deadpitch.df %>% 
+  mutate(fork_length_cm = ifelse(poh_length_cm > fork_length_cm & !is.na(poh_length_cm), NA, fork_length_cm))
+
+deadpitch.df %>% 
+  ggplot(aes(x = poh_length_cm, y = fork_length_cm))+
+  geom_point(aes(color = species_from_oto))+
+  geom_smooth(method = 'lm')+
+  geom_abline(intercept = 0, slope = 1)
+
+length_model <- lm(fork_length_cm ~ poh_length_cm, deadpitch.df)
+summary(length_model)
+
+deadpitch.df <- deadpitch.df %>% 
+  mutate(fork_length_from_poh_cm = predict(length_model, newdata = .)) %>% 
+  mutate(fork_length_cm_measured = fork_length_cm) %>% 
+  mutate(fork_length_imputed = ifelse(!is.na(fork_length_from_poh_cm), TRUE, FALSE)) %>% 
+  mutate(fork_length_from_poh_cm = ifelse(is.na(fork_length_from_poh_cm), fork_length_cm_measured, fork_length_from_poh_cm)) %>% 
+  select(-fork_length_cm)
+
+summary(deadpitch.df$fork_length_from_poh_cm)
+#remove fish with no data for fork length, ona number, age, or weight
+deadpitch.df <- deadpitch.df %>% 
+  filter(!is.na(fork_length_from_poh_cm) | !is.na(ona_number) | !is.na(age) | !is.na(weight_g))
+
 
 #clean up spawned
 tabyl(deadpitch.df$spawned)
@@ -698,32 +724,15 @@ deadpitch.df %>%
   mutate(n = n()) %>% 
   filter(n > 1)
 
-deadpitch.df %>% 
-  ggplot(aes(x = poh_length_cm, y = fork_length_cm))+
-  geom_point(aes(color = species_from_oto))+
-  geom_smooth(method = 'lm')
 
-length_model <- lm(fork_length_cm ~ poh_length_cm, deadpitch.df)
-summary(length_model)
 
-deadpitch.df <- deadpitch.df %>% 
-  mutate(fork_length_cm_predicted = predict(length_model, newdata = .)) %>% 
-  mutate(fork_length_cm_measured = fork_length_cm) %>% 
-  mutate(fork_length_cm_predicted = ifelse(!is.na(fork_length_cm_measured), fork_length_cm_measured, fork_length_cm_predicted)) %>% 
-  mutate(fork_length_imputed = ifelse(is.na(fork_length_cm_measured), TRUE, FALSE)) %>% 
-  select(-fork_length_cm)
-
-summary(deadpitch.df$fork_length_cm_predicted)
-#remove fish with no data for fork length, ona number, age, or weight
-deadpitch.df <- deadpitch.df %>% 
-  filter(!is.na(fork_length_cm_predicted) | !is.na(ona_number) | !is.na(age) | !is.na(weight_g))
-
-ggplot(deadpitch.df, aes(x = fork_length_cm_predicted, color = species_from_oto))+
+#plotting checks####
+ggplot(deadpitch.df, aes(x = fork_length_from_poh_cm, color = species_from_oto))+
   geom_density()+
   theme_bw()+
   geom_vline(xintercept = 35)
 
-ggplot(deadpitch.df, aes(x = species_from_oto, y = fork_length_cm_predicted, group = species_from_oto, color = species_from_oto, shape = age_agrees))+
+ggplot(deadpitch.df, aes(x = species_from_oto, y = fork_length_from_poh_cm, group = species_from_oto, color = species_from_oto, shape = age_agrees))+
   geom_jitter(height = 0, width = 0.1)+
   geom_violin(fill = NA, color = 1)+
   theme_bw()+
@@ -731,45 +740,45 @@ ggplot(deadpitch.df, aes(x = species_from_oto, y = fork_length_cm_predicted, gro
 
 deadpitch.df %>% 
   filter(!is.na(age)) %>% 
-  ggplot(aes(x = age, y = fork_length_cm_predicted, fill = species_from_oto))+
+  ggplot(aes(x = age, y = fork_length_from_poh_cm, fill = species_from_oto))+
   geom_violin(scale = "width")+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)
 
 deadpitch.df %>% 
   filter(!is.na(age)) %>% 
-  ggplot(aes(x = year, y = fork_length_cm_predicted, group = year))+
+  ggplot(aes(x = year, y = fork_length_from_poh_cm, group = year))+
   geom_violin(scale = "width")+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
   facet_wrap(~age)
 
 deadpitch.df %>% 
   filter(!is.na(age)) %>% 
-  ggplot(aes(x = age, y = fork_length_cm_predicted, fill = species_from_oto))+
+  ggplot(aes(x = age, y = fork_length_from_poh_cm, fill = species_from_oto))+
   geom_violin(scale = "width")+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
   facet_grid(hatchery~sex)
 
 deadpitch.df %>% 
   filter(!is.na(age)) %>% 
-  ggplot(aes(x = sex, y = fork_length_cm_predicted, fill = species_from_oto))+
+  ggplot(aes(x = sex, y = fork_length_from_poh_cm, fill = species_from_oto))+
   geom_violin(scale = "width")+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
   facet_grid(~age)
 
 deadpitch.df %>% 
-  ggplot(aes(x = age, y = fork_length_cm_predicted, color = species_from_oto))+
+  ggplot(aes(x = age, y = fork_length_from_poh_cm, color = species_from_oto))+
   geom_jitter(height = 0, width = 0.25)+
   facet_wrap(~year)+
   scale_shape_manual(values = c(1, 16, 15))
 
 deadpitch.df %>% 
-  ggplot(aes(x = age, y = fork_length_cm_predicted, color = age_source, shape = age_agrees))+
+  ggplot(aes(x = age, y = fork_length_from_poh_cm, color = age_source, shape = age_agrees))+
   geom_jitter(height = 0, width = 0.25)+
   facet_wrap(~year)+
   scale_shape_manual(values = c(1, 16, 15))
 
 deadpitch.df %>% 
-  ggplot(aes(x = hatchery, y = fork_length_cm_predicted, color = species_from_oto))+
+  ggplot(aes(x = hatchery, y = fork_length_from_poh_cm, color = species_from_oto))+
   geom_hline(yintercept = 35)+
   geom_jitter(width = 0.25, height= 0, size = 0.3)
 
@@ -784,7 +793,7 @@ deadpitch.df %>%
   adorn_ns()
 
 deadpitch.df %>% 
-  filter(fork_length_cm_predicted >35, hatchery != "unknown") %>% 
+  filter(fork_length_from_poh_cm >35, hatchery != "unknown") %>% 
   tabyl(year, hatchery, section) %>% 
   adorn_percentages("row") %>%
   adorn_pct_formatting(digits = 2) %>%
@@ -797,7 +806,7 @@ deadpitch.df %>%
   mutate(type = "sockeye from otoliths") %>% 
   bind_rows(
   deadpitch.df %>% 
-  filter(fork_length_cm_predicted >35, hatchery != "unknown") %>% 
+  filter(fork_length_from_poh_cm >35, hatchery != "unknown") %>% 
   group_by(year, section) %>%
   summarise(prop_natural = sum(hatchery == "natural")/n(), total_fish = n()) %>% 
   mutate(type = "sockeye > 35 cm")) %>% 
@@ -823,16 +832,11 @@ deadpitch.df %>%
 
 #write csv####
 write.csv(deadpitch.df %>% 
-            select(year, date, section, okr_section, location, reach, ona_number,
-                   age, dfo_age, ona_age, age_source, age_agrees, species_from_oto, age_sample_quality, age_comment,
+            select(year, date, section, sub_section = okr_section, location, reach, ona_number,
+                   age, dfo_age, ona_age, age_source, age_agrees, age_sample_quality, age_comment,
+                   species_from_oto,
                    hatchery, thermal_marks, 
-                   fork_length_cm_measured, poh_length_cm, fork_length_imputed, fork_length_cm_predicted, 
-                   weight_g, sex, spawned, comments)
+                   fork_length_from_poh_cm, fork_length_cm_measured, poh_length_cm, fork_length_imputed, 
+                   weight_g, sex, spawned,
+                   comments)
           , file = "../../okanagan_data/deadpitch/combined_and_cleaned/okanagan_deadpitch.csv")
-
-
-
-
-
-
-
