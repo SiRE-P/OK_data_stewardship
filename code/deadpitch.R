@@ -593,7 +593,9 @@ deadpitch.df <- deadpitch_hold %>%
                                       is.na(age) ~ NA_character_)) %>% 
   mutate(age = factor(age, levels = c(2,3,4,5,6, 1.1, 2.1, 1.2, 2.2, 1.3, 1.4), ordered =  TRUE)) %>% 
   mutate(location = ifelse(year == 2013, NA, location)) %>%  #removing location in 2013 because they are just labelled as okanagan river but this includes both lower and middle river - okr section (and reach) distinguish these
-  mutate(okr_section = ifelse(!is.na(location) & location == "ok falls prov park - vds 17", "above mcintyre", okr_section))
+  mutate(okr_section = ifelse(!is.na(location) & location == "ok falls prov park - vds 17", "above mcintyre", okr_section)) %>% 
+  mutate(age_comment = ifelse(age_sample_quality == "otoliths look different", "otoliths look different", age_comment)) %>% 
+  mutate(age_sample_quality = as.numeric(ifelse(age_sample_quality == "otoliths look different", 1, age_sample_quality)))
 
 lower_ok_river <- c("index", "north", "south", "oliver")
 middle_ok_river <- c("above mcintyre")
@@ -695,6 +697,7 @@ tabyl(deadpitch.df, species_from_oto)
 tabyl(deadpitch.df, year, section, species_from_oto)
 tabyl(deadpitch.df, species)
 tabyl(deadpitch.df, age, year)
+tabyl(deadpitch.df, age_sample_quality, year)
 tabyl(deadpitch.df, age_source, year)
 tabyl(deadpitch.df, dfo_age, year)
 tabyl(deadpitch.df, ona_age, year)
