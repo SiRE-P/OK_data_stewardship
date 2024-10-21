@@ -201,7 +201,7 @@ pen_2007 <- read_excel("../../okanagan_data/deadpitch/penticton_channel_2005-201
   type.convert(as.is = TRUE) %>%      
   remove_empty(c("rows", "cols")) %>% 
   mutate(date = convert_to_date(date)) %>%
-  mutate(age = as.character(as.numeric(euro_age_from_gilbert(age_gilbert_rich))-1)) %>% #subtracting a year because ages look too high for size of fish and the number of age 4s is too high
+  mutate(age = as.character(as.numeric(euro_age_from_gilbert(age_gilbert_rich))-1)) %>% #subtracting a year because the PBS lab added a year to each fish because the fish were caught in January (email confirmation here - https://github.com/SiRE-P/OK_data_stewardship/blob/main/notes/2007%20deadpitch%20aging%20discrepancy.pdf)
   mutate(okr_section = "penticton channel") %>% 
   select(date, ona_number, okr_section, age, sex = sex_m_f_green, fork_length_cm = length_cm, weight_g = weight_g, dna = dna_y_n, species) 
 
