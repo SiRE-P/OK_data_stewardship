@@ -120,7 +120,7 @@ data.frame(issue = c("SK Adult.BioData Collection Sheet 2015.xlsx - has two copi
                      "in 2011 there is a Deadpitch\\_Original (2) sheet that also has PBS ages, but these seem to be out of order in some cases",
                      "there are some age 0s, 1s and 2s that are too large to be kokanee",
                      "in 2013 pen channel, ona\\_fish number 104326 is marked hatchery, but is marked unmarked for origin and is aged as a kokanee",
-                     "PBS aging lab added a year to each fish in 2007 pen channel because they were caught in January - confirmation email here - https://github.com/SiRE-P/OK_data_stewardship/blob/main/notes/2007%20deadpitch%20aging%20discrepancy.pdf",
+                     "PBS aging lab added a year to each fish in 2007 pen channel because they were caught in January - confirmed by email, which has been posted in data stewardship github repo",
                      "locations use inconsistent names",
                      "poh lengths was greater than fork length for some fish",
                      "fish with longer lengths than possible for sockeye",
