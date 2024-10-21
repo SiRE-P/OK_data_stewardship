@@ -1,25 +1,15 @@
-(PT to review these suggestions and determine which might best be checked using R code as applied to the inputted files)
-
 Things to check in the input files. Once checked, a note could be added to  "DeadpitchRawFileSourcesNotes.txt" under the file name
 
--figure out which years were exclusively DFO PADS ageing, and which years had both ONA and DFO ageing
--cross-compare to the PADS files? (discussed this with PT around October 7ish and he had not decided whether we should)
 -compare the ages in the "RawData" data file to "Aging Worksheet" and make sure they are the same (AO has done some already--I have to make a note of which ones)
 -if there are other worksheets/tabs that derive some of the values shown in the "RawData", are they consistent across the different tabs?
--is it the same file that BJ originally used? If not, compare to BJ's version and see if they have the same ONA numbers
--is there Pen Chan data in the file if it's an appropriate year; it looks like the first year with Pen Chan deadpitch was 2005 (accd files from Ryan... should I check Margot's files, too; also BJ's) *** ?? 
--ONA fish numbers? PT can check for redundancy using code
--Do we have the Broodstock data?
--Do we have the Pen Chan / Skaha deadpitch? It goes back to **before there were Sox there, i.e., biosampling goes back to 2005 (and KO enumeration goes back to 2008 I think)
--check against BJ's version (for some columns)
+-is it the same input file that BJ originally used? (assuming he usually used the most appropriate) If not, compare to that file 
+-gaps in the ONA numbers may be a flag that we missed something. I can use this to check
+-Do we have the Broodstock data in all years? No, but we don't need it at this time.
+-Cross compare some of the files in Margot's folders to what we used for input
 
 
-"kok PADS fr RyanB - wkg.xlsx"  - Seems that I incorp'd this in the "ONA & PADS 2009 Skaha kok sprs.xlsx", BUT there are "Gaff (deadpitch)" data that did not correspond to the data entry/raw data sheet that Ryan gave me.
 
 
--Margot's deadpitch files are available in this directory:
-Margot\!MARGOT\!OKANAGAN\1 SOCKEYE\!ADULT SOCKEYE\ADULT BIOLOGICAL TRAITS
-(Both PT and HS have a copy of Margot's hard drive--it might be in a "laptops" superfolder in what I gave to HS)
 
 
 
