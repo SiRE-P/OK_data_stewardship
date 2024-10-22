@@ -839,7 +839,10 @@ deadpitch.df %>%
 deadpitch.df %>% 
   mutate(doy = yday(date)) %>% 
   ggplot(aes(y = doy, x = year, color = section))+
-  geom_jitter(height = 0)
+  geom_jitter(height = 0)+
+  scale_y_continuous(breaks = c(15, 46, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349), 
+                     labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))+
+  theme_bw()
 
 
 #write csv####
