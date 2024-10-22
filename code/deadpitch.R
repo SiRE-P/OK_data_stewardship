@@ -721,8 +721,6 @@ summary(deadpitch.df)
 str(deadpitch.df)
 
 #check for multiples of ona_number
-deadpitch <- deadpitch %>% arrange(date)
-
 deadpitch.df %>%
   filter(!is.na(ona_number)) %>% 
   group_by(ona_number) %>% 
