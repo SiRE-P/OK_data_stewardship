@@ -836,6 +836,11 @@ deadpitch.df %>%
   adorn_percentages("col") %>% 
   adorn_pct_formatting(rounding = "half up", digits = 0)
 
+deadpitch.df %>% 
+  mutate(doy = yday(date)) %>% 
+  ggplot(aes(y = doy, x = year, color = section))+
+  geom_jitter(height = 0)
+
 
 #write csv####
 write.csv(deadpitch.df %>% 
