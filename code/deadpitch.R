@@ -698,7 +698,7 @@ tabyl(deadpitch.df %>% filter(age == "1.1"), year, sex)
 #post processing and checks####
 tabyl(deadpitch.df, year)
 tabyl(deadpitch.df, species_from_oto)
-tabyl(deadpitch.df, year, section, species_from_oto)
+tabyl(deadpitch.df, year, species_from_oto, section)
 tabyl(deadpitch.df, species)
 tabyl(deadpitch.df, age, year)
 tabyl(deadpitch.df, age_sample_quality, year)
@@ -744,10 +744,16 @@ ggplot(deadpitch.df, aes(x = fork_length_from_poh_cm, color = species_from_oto))
   geom_vline(xintercept = 35)
 
 ggplot(deadpitch.df, aes(x = species_from_oto, y = fork_length_from_poh_cm, group = species_from_oto, color = species_from_oto, shape = age_agrees))+
-  geom_jitter(height = 0, width = 0.1)+
-  geom_violin(fill = NA, color = 1)+
+  geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
+  geom_violin(scale = "width", fill = NA, color = 1)+
   theme_bw()+
   facet_wrap(~year)
+
+ggplot(deadpitch.df %>% filter(section == "lower_ok_river"), aes(x = year, y = fork_length_from_poh_cm, group = year))+
+  geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
+  geom_violin(scale = "width", fill = NA, color = 1)+
+  theme_bw()+
+  facet_wrap( ~ species_from_oto)
 
 deadpitch.df %>% 
   filter(!is.na(age)) %>% 
