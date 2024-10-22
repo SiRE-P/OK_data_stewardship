@@ -139,12 +139,16 @@ compare_df_cols(dp_2000, dp_2001, dp_2002, dp_2003, dp_2004, dp_2005)
 #no ages in 2006 dead pitch - they are available in the brood stock fish, but those are not included because they select for large fish
 #only intact fish are sized
 #notes available in the INFO tab of datasheet
-dp_2006 <- read_excel("../../okanagan_data/deadpitch/2000-2012/!Adults 2006 Summary.xls", sheet = "Deadpitch") %>% 
+dp_2006 <- read_excel("../../okanagan_data/deadpitch/2000-2012/2006 Adult Sx Biosampling.xls", sheet = "Original") %>% 
   clean_names() %>%
   remove_empty(c("rows", "cols")) %>% 
-  mutate(date = convert_to_date(date)) %>%
-  select(date, location = reach, sex, fork_length_cm = length_cm, comments)%>% 
-  filter(!is.na(date))
+  mutate(date = convert_to_date(date_sampled)) %>%
+  mutate(age = euro_age_from_gilbert(age)) %>% 
+  mutate(weight_g = as.numeric(weight_g)) %>% 
+  mutate(fecundity = as.character(fecundity)) %>% 
+  select(date, ona_number, sex = sex_m_f_green, fork_length_cm = length_cm, weight_g = weight_g, fecundity, age, comments)%>% 
+  filter(!is.na(date)) %>% 
+  mutate(okr_section = "index")
 
 tail(dp_2006)
 
