@@ -124,7 +124,9 @@ data.frame(issue = c("SK Adult.BioData Collection Sheet 2015.xlsx - has two copi
                      "locations use inconsistent names",
                      "poh lengths was greater than fork length for some fish",
                      "fish with longer lengths than possible for sockeye",
-                      "some fish had impossibly small poh on fish for their fork length"),
+                      "some fish had impossibly small poh on fish for their fork length",
+                     "2009 file the ages were flipped for ONA no. 19420254 and 19420255 in the raw tab vs. the ageing tab; AO asked Lynnea about it Oct23,2024",
+                     "Deadpitch Adult.BioData 12-2-19.xlsx (for 2018) may not have final ages for Pen Chan and Shingle"),
            decision = c("using first one",
                         "using Tag Number(s)",
                         "exlcuding for now",
@@ -138,7 +140,9 @@ data.frame(issue = c("SK Adult.BioData Collection Sheet 2015.xlsx - has two copi
                         "cleaned up names and aligned them based on consultation with K. Alex (ONA)",
                         "set measured fork length to NA for these fish",
                         "removed fish with fork length greater than 70 cm",
-                        "set poh to NA for fish with poh less than 5 cm when fork length is greater than 30 cm"
+                        "set poh to NA for fish with poh less than 5 cm when fork length is greater than 30 cm",
+                        "wait to hear back from Lynnea, which she won't be able to do until December",
+                        "wait to hear back from Lynnea in December"
                         
                         )) %>% 
   kbl("latex", longtable = TRUE, booktabs = TRUE, escape = FALSE, caption = "Table of discrepancies and decisions.") %>%
