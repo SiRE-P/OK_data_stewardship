@@ -84,7 +84,7 @@ metatable <- data.frame(variable = names(deadpitch),
                                     "indicator of whether or not the DFO and ONA ages are the same when both are present",
                                     "age sample quality metric where 0 is low and 5 is high",
                                     "comments on aging from the raw data sheets",
-                                    "sockeye vs. kokanee as determined by the otolith aging based on whether or not the fish spent time in the ocean",
+                                    "sockeye vs. kokanee as determined by aging based on whether or not the fish spent time in the ocean",
                                     "indicator for whether or not fish is of natural or hatchery origin",
                                     "specific thermal marks from the hatchery on the otoliths",
                                     "estimimated from post orbital hypural length (poh\\; see below)\\; when poh is not available we use measured fork length\\; however, measured fork length is less precise because it is affected by tail erosion or development of lengthend snout during spawning",
@@ -126,7 +126,8 @@ data.frame(issue = c("SK Adult.BioData Collection Sheet 2015.xlsx - has two copi
                      "fish with longer lengths than possible for sockeye",
                       "some fish had impossibly small poh on fish for their fork length",
                      "2009 file the ages were flipped for ONA no. 19420254 and 19420255 in the raw tab vs. the ageing tab; AO asked Lynnea about it Oct23,2024",
-                     "Deadpitch Adult.BioData 12-2-19.xlsx (for 2018) may not have final ages for Pen Chan and Shingle"),
+                     "Deadpitch Adult.BioData 12-2-19.xlsx (for 2018) may not have final ages for Pen Chan and Shingle", 
+                     "some data included samples taken in July, August, and September. Kari Alex confirmed that these were not deadpitch"),
            decision = c("using first one",
                         "using Tag Number(s)",
                         "exlcuding for now",
@@ -142,8 +143,8 @@ data.frame(issue = c("SK Adult.BioData Collection Sheet 2015.xlsx - has two copi
                         "removed fish with fork length greater than 70 cm",
                         "set poh to NA for fish with poh less than 5 cm when fork length is greater than 30 cm",
                         "wait to hear back from Lynnea, which she won't be able to do until December",
-                        "wait to hear back from Lynnea in December"
-                        
+                        "wait to hear back from Lynnea in December",
+                        "removed all samples taken prior to October 1"
                         )) %>% 
   kbl("latex", longtable = TRUE, booktabs = TRUE, escape = FALSE, caption = "Table of discrepancies and decisions.") %>%
   kable_styling(latex_options = c("hold_position", "repeat_header", "striped")) %>% 
