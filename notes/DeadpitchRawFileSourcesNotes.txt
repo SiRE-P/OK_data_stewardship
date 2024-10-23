@@ -5,6 +5,7 @@ Deadpitch Raw data file sources and some things to check
 (2022)
 *FWMT Deadpitch Adult.BioData 2022.xlsx
 Still need the finalized and QA/QC'd version from ONA
+(actually, it looks like I might have the final version of 2022 Oso after all, renamed "FWMT (Oso) Deadpitch Adult.BioData 2022.xlsx")
 
 (2023)
 Nerkid (Skaha) Deadpitch Adult.BioData_23.xlsx
@@ -16,6 +17,7 @@ Still need the finalized ageing
 (2000)
 2000 sockeye biosampling.xls
 From: Margot's files (the file that BJ used)
+-might search in Rankin files and/or online PADS files to make sure the ageing is right
 
 (2001)
 2001 Sox Biosamples.xlsx
@@ -41,11 +43,18 @@ KO biosampling_05.xlsx
 from AO's "RyanB origs" folder
 
 (2006)
-!Adults 2006 Summary.xlsx
-From: Margot's files (the file that BJ used)
+(checked the other files in Margot's folder)
+2006 Adult Sx Biosampling.xls
+From: Margot's files
+
+sk2006-spwnr ages PBS.xls
+From: Margot's files
 
 KO biosampling_06.xlsx
 from AO's "RyanB origs" folder
+
+[!Adults 2006 Summary.xlsx]
+[From: Margot's files (the file that BJ used)--didn't have all the data by quite a long shot]
 
 (2007)
 Skaha_Osys_Dedptch_07.xls
@@ -159,7 +168,7 @@ from Chelsea Oct9-2024, but does not have the ages; waiting for final version fr
 Nerkid (Skaha) Deadpitch Adult.BioData_22.xlsx
 
 Okanagan Deadpitch Adult.BioData_22_OKLakeTribs.xlsx
-from ONA email to AO (me find)
+from ONA email to AO (me find the date)
 
 (2023)
 FWMT Deadpitch Adult.BioData_23.xlsx
