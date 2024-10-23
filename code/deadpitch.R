@@ -193,10 +193,10 @@ dp_2007 %>%
 tabyl(dp_2007$age)
 
 dp_2007 %>% 
-  mutate(species_from_oto = case_when(is.wholenumber(as.numeric(age)) ~ "kokanee",
+  mutate(species_from_age = case_when(is.wholenumber(as.numeric(age)) ~ "kokanee",
                                       !is.wholenumber(as.numeric(age)) ~ "sockeye",
                                       is.na(age) ~ NA_character_))%>% 
-  ggplot(aes(color = possibly_mixed_up, y = fork_length_cm, x = species_from_oto)) +
+  ggplot(aes(color = possibly_mixed_up, y = fork_length_cm, x = species_from_age)) +
   geom_jitter()
 
 pen_2007 <- read_excel("../../okanagan_data/deadpitch/penticton_channel_2005-2012/KO biosampling_07.xlsx", sheet = "KO Pen Ch Biosampling", skip = 6) %>% 
@@ -592,7 +592,7 @@ deadpitch.df <- deadpitch_hold %>%
   mutate(fork_length_cm = ifelse(fork_length_cm < 5, NA, fork_length_cm)) %>%  # remove impossibly small fork length fish
   mutate(age = ifelse(age %in% c(0, 1), NA, age)) %>% 
   mutate(age = ifelse(age == 2 & fork_length_cm > 35, NA, age)) %>% #make age NA for weird 2007 fish that are large but labelled as 2.0s
-  mutate(species_from_oto = case_when(is.wholenumber(as.numeric(age)) ~ "kokanee",
+  mutate(species_from_age = case_when(is.wholenumber(as.numeric(age)) ~ "kokanee",
                                       !is.wholenumber(as.numeric(age)) ~ "sockeye",
                                       is.na(age) ~ NA_character_)) %>% 
   mutate(age = factor(age, levels = c(2,3,4,5,6, 1.1, 2.1, 1.2, 2.2, 1.3, 1.4), ordered =  TRUE)) %>% 
@@ -646,6 +646,22 @@ deadpitch.df <- deadpitch.df %>%
                              is.na(section) & location %in% okanagan_section ~ "ok_lake_creeks",
                              TRUE ~ section)) 
 
+deadpitch.df %>% 
+  mutate(doy = yday(date)) %>% 
+  ggplot(aes(y = doy, x = year, color = section))+
+  geom_jitter(height = 0)+
+  geom_hline(yintercept = yday(as.Date("2020-10-01")))+
+  scale_y_continuous(breaks = c(15, 46, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349), 
+                     labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))+
+  theme_bw()
+
+#filter out samples from earlier than October 1####
+#these are not deadpitch surveys - confirmed with Kari Alex
+deadpitch.df <- deadpitch.df %>% 
+  mutate(doy = yday(date)) %>% 
+  filter(doy > 275) %>% 
+  select(-doy)
+  
 #calculate fork lengths based on poh####
 #set fork lengths to NA if they are less than poh
 deadpitch.df <- deadpitch.df %>% 
@@ -653,7 +669,7 @@ deadpitch.df <- deadpitch.df %>%
 
 deadpitch.df %>% 
   ggplot(aes(x = poh_length_cm, y = fork_length_cm))+
-  geom_point(aes(color = species_from_oto))+
+  geom_point(aes(color = species_from_age))+
   geom_smooth(method = 'lm')+
   geom_abline(intercept = 0, slope = 1)
 
@@ -697,8 +713,8 @@ tabyl(deadpitch.df %>% filter(age == "1.1"), year, sex)
 
 #post processing and checks####
 tabyl(deadpitch.df, year)
-tabyl(deadpitch.df, species_from_oto)
-tabyl(deadpitch.df, year, species_from_oto, section)
+tabyl(deadpitch.df, species_from_age)
+tabyl(deadpitch.df, year, species_from_age, section)
 tabyl(deadpitch.df, species)
 tabyl(deadpitch.df, age, year)
 tabyl(deadpitch.df, age_sample_quality, year)
@@ -738,12 +754,12 @@ deadpitch.df <- deadpitch.df[!duplicated(deadpitch.df$ona_number) | is.na(deadpi
 
 
 #plotting checks####
-ggplot(deadpitch.df, aes(x = fork_length_from_poh_cm, color = species_from_oto))+
+ggplot(deadpitch.df, aes(x = fork_length_from_poh_cm, color = species_from_age))+
   geom_density()+
   theme_bw()+
   geom_vline(xintercept = 35)
 
-ggplot(deadpitch.df, aes(x = species_from_oto, y = fork_length_from_poh_cm, group = species_from_oto, color = species_from_oto, shape = age_agrees))+
+ggplot(deadpitch.df, aes(x = species_from_age, y = fork_length_from_poh_cm, group = species_from_age, color = species_from_age, shape = age_agrees))+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
   geom_violin(scale = "width", fill = NA, color = 1)+
   theme_bw()+
@@ -753,11 +769,11 @@ ggplot(deadpitch.df %>% filter(section == "lower_ok_river"), aes(x = year, y = f
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
   geom_violin(scale = "width", fill = NA, color = 1)+
   theme_bw()+
-  facet_wrap( ~ species_from_oto)
+  facet_wrap( ~ species_from_age)
 
 deadpitch.df %>% 
   filter(!is.na(age)) %>% 
-  ggplot(aes(x = age, y = fork_length_from_poh_cm, fill = species_from_oto))+
+  ggplot(aes(x = age, y = fork_length_from_poh_cm, fill = species_from_age))+
   geom_violin(scale = "width")+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)
 
@@ -770,20 +786,20 @@ deadpitch.df %>%
 
 deadpitch.df %>% 
   filter(!is.na(age)) %>% 
-  ggplot(aes(x = age, y = fork_length_from_poh_cm, fill = species_from_oto))+
+  ggplot(aes(x = age, y = fork_length_from_poh_cm, fill = species_from_age))+
   geom_violin(scale = "width")+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
   facet_grid(hatchery~sex)
 
 deadpitch.df %>% 
   filter(!is.na(age)) %>% 
-  ggplot(aes(x = sex, y = fork_length_from_poh_cm, fill = species_from_oto))+
+  ggplot(aes(x = sex, y = fork_length_from_poh_cm, fill = species_from_age))+
   geom_violin(scale = "width")+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
   facet_grid(~age)
 
 deadpitch.df %>% 
-  ggplot(aes(x = age, y = fork_length_from_poh_cm, color = species_from_oto))+
+  ggplot(aes(x = age, y = fork_length_from_poh_cm, color = species_from_age))+
   geom_jitter(height = 0, width = 0.25)+
   facet_wrap(~year)+
   scale_shape_manual(values = c(1, 16, 15))
@@ -795,15 +811,15 @@ deadpitch.df %>%
   scale_shape_manual(values = c(1, 16, 15))
 
 deadpitch.df %>% 
-  ggplot(aes(x = hatchery, y = fork_length_from_poh_cm, color = species_from_oto))+
+  ggplot(aes(x = hatchery, y = fork_length_from_poh_cm, color = species_from_age))+
   geom_hline(yintercept = 35)+
   geom_jitter(width = 0.25, height= 0, size = 0.3)
 
 deadpitch.df %>%
-  tabyl(hatchery, species_from_oto)
+  tabyl(hatchery, species_from_age)
 
 deadpitch.df %>%  
-  filter(species_from_oto == "sockeye", hatchery != "unknown") %>% 
+  filter(species_from_age == "sockeye", hatchery != "unknown") %>% 
   tabyl(year, hatchery, section) %>% 
   adorn_percentages("row") %>%
   adorn_pct_formatting(digits = 2) %>%
@@ -817,7 +833,7 @@ deadpitch.df %>%
   adorn_ns()
   
 deadpitch.df %>% 
-  filter(species_from_oto == "sockeye", hatchery != "unknown") %>% 
+  filter(species_from_age == "sockeye", hatchery != "unknown") %>% 
   group_by(year, section) %>%
   summarise(prop_natural = sum(hatchery == "natural")/n(), total_fish = n()) %>% 
   mutate(type = "sockeye from otoliths") %>% 
@@ -840,26 +856,19 @@ deadpitch.df %>%
   adorn_pct_formatting(rounding = "half up", digits = 0)
 
 deadpitch.df %>% 
-  filter(species_from_oto == "sockeye") %>% 
+  filter(species_from_age == "sockeye") %>% 
   tabyl(age, year, section) %>% 
   adorn_totals(c("col")) %>%
   adorn_percentages("col") %>% 
   adorn_pct_formatting(rounding = "half up", digits = 0)
 
-deadpitch.df %>% 
-  mutate(doy = yday(date)) %>% 
-  ggplot(aes(y = doy, x = year, color = section))+
-  geom_jitter(height = 0)+
-  scale_y_continuous(breaks = c(15, 46, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349), 
-                     labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))+
-  theme_bw()
 
 
 #write csv####
 write.csv(deadpitch.df %>% 
             select(year, date, section, sub_section = okr_section, location, reach, ona_number,
                    age, dfo_age, ona_age, age_source, age_agrees, age_sample_quality, age_comment,
-                   species_from_oto,
+                   species_from_age,
                    hatchery, thermal_marks, 
                    fork_length_from_poh_cm, fork_length_cm_measured, poh_length_cm, fork_length_imputed, 
                    weight_g, sex, spawned,
