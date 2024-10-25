@@ -754,6 +754,11 @@ deadpitch.df <- deadpitch.df[!duplicated(deadpitch.df$ona_number) | is.na(deadpi
 
 
 #plotting checks####
+ggplot(deadpitch.df, aes(x = fork_length_from_poh_cm, y = weight_g,color = age))+
+  geom_point()+
+  theme_bw()+
+  scale_color_viridis_d(na.value = "grey")
+
 ggplot(deadpitch.df, aes(x = fork_length_from_poh_cm, color = species_from_age))+
   geom_density()+
   theme_bw()+
