@@ -111,7 +111,7 @@ metatable %>%
 ```
 
 ```{r discrepancies, echo=FALSE, warning=FALSE, message=FALSE}
-data.frame(issue = c("-SK Adult.BioData Collection Sheet 2015.xlsx - has two copies of RawData",
+data.frame(issue = c("-conversion of Gilbert Rich ages are according to Table 2 in \\ https://mtalab.adfg.alaska.gov/OTO/Files/SCLSalmonChinookagedetermionproceduresv9d.pdf","-SK Adult.BioData Collection Sheet 2015.xlsx - has two copies of RawData",
                      "*tag number in SK Adult.BioData Collection Sheet 2015.xlsx does not match format of tag number in other sheets, but it looks like Tag Number(s) does",
                      "-what does the table of data at the bottom of Penticton Channel deadpitch 2019-2021.xlsx sheet 2021 correspond to? It looks like it is some sort of summary",
                      "-ONA number 20350036 occurs twice in the dataset, once on 2020-11-03, and once on 2020-10-22. Both have the same otolith vial number. They are in consecutive rows (37, 37) in the datasheet - Shingle deadpitch 2019-2021 (002).xlsx and these are in the october dates. Is the November date an error? The rows contain non-overlapping info suggesting they are the same fish.",
@@ -127,13 +127,14 @@ data.frame(issue = c("-SK Adult.BioData Collection Sheet 2015.xlsx - has two cop
                       "-some fish had impossibly small poh on fish for their fork length",
                      "-2009 file the ages were flipped for ONA no. 19420254 and 19420255 in the raw tab vs. the ageing tab; AO asked Lynnea about it Oct23,2024",
                      "-Deadpitch Adult.BioData 12-2-19.xlsx (for 2018) may not have final ages for Pen Chan and Shingle", 
-                     "-some data included samples taken in July, August, and September. Kari Alex confirmed that these were not deadpitch",
+                     "-some data (e.g., 2001 and 2004, maybe others) included samples taken in July, August, and September. Kari Alex confirmed that these were not deadpitch",
                      "-Should add the kind of ageing that was done, i.e., scale, otolith, otolith surface (photograph); this will be available in PADS files",
                      "-2003: three ageing differences between the input file we are using (Margot's) and the PADS data",
                      "-2001 two \"DFO number\" 121. Same sex, same age, different Fish number",
                      "-We have not uploaded all broodstock data"),
            
-           decision = c("using first one",
+           decision = c("ageing convention",
+                        "using first one",
                         "using Tag Number(s)",
                         "excluding for now; ask Lynnea when she has time",
                         "removing november entry",
