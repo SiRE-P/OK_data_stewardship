@@ -131,7 +131,8 @@ data.frame(issue = c("-conversion of Gilbert Rich ages are according to Table 2 
                      "-Should add the kind of ageing that was done, i.e., scale, otolith, otolith surface (photograph); this will be available in PADS files",
                      "-2003: three ageing differences between the input file we are using (Margot's) and the PADS data",
                      "-2001 two \"DFO number\" 121. Same sex, same age, different Fish number",
-                     "-We have not uploaded all broodstock data"),
+                     "-We have not uploaded all available broodstock data",
+                     "ONA no. 3125 in 2005 weight is wrong"),
            
            decision = c("ageing convention",
                         "using first one",
@@ -154,7 +155,8 @@ data.frame(issue = c("-conversion of Gilbert Rich ages are according to Table 2 
                         "to be done later when we have time",
                         "to be addressed later when we have time if desired",
                         "PT assumed they were different fish--diff POH and FL",
-                        "Okay for now, not needed yet"
+                        "Okay for now, not needed yet",
+                        "Leaving for now"
                         )) %>% 
   kbl("latex", longtable = TRUE, booktabs = TRUE, escape = FALSE, caption = "Table of discrepancies and decisions.") %>%
   kable_styling(latex_options = c("hold_position", "repeat_header", "striped")) %>% 
