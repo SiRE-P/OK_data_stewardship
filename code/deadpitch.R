@@ -599,8 +599,7 @@ deadpitch.df <- deadpitch_hold %>%
   mutate(location = ifelse(year == 2013, NA, location)) %>%  #removing location in 2013 because they are just labelled as okanagan river but this includes both lower and middle river - okr section (and reach) distinguish these
   mutate(okr_section = ifelse(!is.na(location) & location == "ok falls prov park - vds 17", "above mcintyre", okr_section)) %>% 
   mutate(age_comment = ifelse(age_sample_quality == "otoliths look different", "otoliths look different", age_comment)) %>% 
-  mutate(age_sample_quality = as.numeric(ifelse(age_sample_quality == "otoliths look different", 1, age_sample_quality))) %>% 
-  mutate(weight_g = ifelse(weight_g < 20, TRUE, ifelse(weight_g < 350 & fork_length_from_poh_cm > 35, NA, weight_g))) #removing weights from fish that are obviously way too small for their length
+  mutate(age_sample_quality = as.numeric(ifelse(age_sample_quality == "otoliths look different", 1, age_sample_quality)))
 
 lower_ok_river <- c("index", "north", "south", "oliver")
 middle_ok_river <- c("above mcintyre")
@@ -682,7 +681,8 @@ deadpitch.df <- deadpitch.df %>%
   mutate(fork_length_cm_measured = fork_length_cm) %>% 
   mutate(fork_length_imputed = ifelse(!is.na(fork_length_from_poh_cm), TRUE, FALSE)) %>% 
   mutate(fork_length_from_poh_cm = ifelse(is.na(fork_length_from_poh_cm), fork_length_cm_measured, fork_length_from_poh_cm)) %>% 
-  select(-fork_length_cm)
+  select(-fork_length_cm) %>% 
+  mutate(weight_g = ifelse(weight_g < 20, TRUE, ifelse(weight_g < 350 & fork_length_from_poh_cm > 35, NA, weight_g))) #removing weights from fish that are obviously way too small for their length
 
 summary(deadpitch.df$fork_length_from_poh_cm)
 #remove fish with no data for fork length, ona number, age, or weight
