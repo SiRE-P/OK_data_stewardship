@@ -132,7 +132,7 @@ data.frame(issue = c("-conversion of Gilbert Rich ages are according to Table 2 
                      "-2003: three ageing differences between the input file we are using (Margot's) and the PADS data",
                      "-2001 two \"DFO number\" 121. Same sex, same age, different Fish number",
                      "-We have not uploaded all available broodstock data",
-                     "ONA no. 3125 in 2005 weight is wrong"),
+                     "a few fish have weights that are impossibly small for their length"),
            
            decision = c("ageing convention",
                         "using first one",
@@ -156,7 +156,7 @@ data.frame(issue = c("-conversion of Gilbert Rich ages are according to Table 2 
                         "to be addressed later when we have time if desired",
                         "PT assumed they were different fish--diff POH and FL",
                         "Okay for now, not needed yet",
-                        "Leaving for now"
+                        "setting these weights to NA if the fish is greater than 35 cm fork length but less than 350 g, or if the fish is less than 20 g"
                         )) %>% 
   kbl("latex", longtable = TRUE, booktabs = TRUE, escape = FALSE, caption = "Table of discrepancies and decisions.") %>%
   kable_styling(latex_options = c("hold_position", "repeat_header", "striped")) %>% 
