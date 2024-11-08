@@ -639,7 +639,7 @@ deadpitch.df <- deadpitch.df %>%
   mutate(section = case_when(okr_section %in% lower_ok_river ~ "lower_ok_river",
                              okr_section %in% middle_ok_river ~ "middle_ok_river",
                              okr_section %in% upper_ok_river ~ "upper_ok_river",
-                             okr_section %in% shingle_creek ~ "shingle creek",
+                             okr_section %in% shingle_creek ~ "shingle_creek",
                              TRUE ~ NA_character_)) %>% 
   mutate(section = case_when(is.na(section) & location %in% lower_ok_river2 ~ "lower_ok_river",
                              is.na(section) & location %in% middle_ok_river2 ~ "middle_ok_river",
