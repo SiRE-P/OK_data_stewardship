@@ -755,8 +755,8 @@ deadpitch.df <- deadpitch.df[!duplicated(deadpitch.df$ona_number) | is.na(deadpi
 
 
 #plotting checks####
-ggplot(deadpitch.df %>% 
-       aes(x = fork_length_from_poh_cm, y = weight_g, color = age, shape = weight_issue))+
+ggplot(deadpitch.df,
+       aes(x = fork_length_from_poh_cm, y = weight_g, color = age))+
   geom_point()+
   theme_bw()+
   scale_color_viridis_d(na.value = "grey")
@@ -881,3 +881,4 @@ write.csv(deadpitch.df %>%
                    weight_g, sex, spawned,
                    comments)
           , file = "../../okanagan_data/deadpitch/combined_and_cleaned/okanagan_deadpitch.csv")
+
