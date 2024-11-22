@@ -766,6 +766,13 @@ ggplot(deadpitch.df, aes(x = fork_length_from_poh_cm, color = species_from_age))
   theme_bw()+
   geom_vline(xintercept = 35)
 
+ggplot(deadpitch.df, aes(y = fork_length_from_poh_cm, x = species_from_age, fill = species_from_age))+
+  geom_violin()+
+  geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
+  theme_bw()+
+  geom_vline(xintercept = 35)+
+  facet_wrap(~section)
+
 ggplot(deadpitch.df, aes(x = species_from_age, y = fork_length_from_poh_cm, group = species_from_age, color = species_from_age, shape = age_agrees))+
   geom_sina(scale = "width", size = 0.6, alpha = 0.2)+
   geom_violin(scale = "width", fill = NA, color = 1)+
